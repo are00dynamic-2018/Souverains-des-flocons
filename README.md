@@ -7,5 +7,3 @@ MERLE-REMOND Julian <br>
 RUCHE Nicolas <br>
 TRAZIE Océane <br>
 
-## site
-https://are00dynamic-2018.github.io/Souverains-des-flocons/
