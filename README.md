@@ -3,6 +3,8 @@ Etude de la formation des flocons de neige
 
 ## membres
 MANSOUR Mélissa <br>
-MERLE-REMOND Julian
-RUCHE Nicolas
-TRAZIE Océane
+MERLE-REMOND Julian <br>
+RUCHE Nicolas <br>
+TRAZIE Océane <br>
+
+
