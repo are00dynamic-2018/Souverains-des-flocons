@@ -36,7 +36,7 @@ class HexaGrid(object):
     
     def __init__(self, t_ijk):
         #a = HexaGrid(t_ijk)
-        self.grid = np.
+        #self.grid = np.
         
     def __getitem__(self, ijk):
         #data = grid[ijk]
