@@ -1,7 +1,7 @@
 # Souverains-des-flocons
 Etude de la formation des flocons de neige
 
-![Image of Devine Snowflake](https://octode.github.com/images/yaktocat.png)
+![Image of Devine Snowflake](https://bridoz.com/wp-content/uploads/2014/05/neige11.jpg)
 
 
 ## membres
