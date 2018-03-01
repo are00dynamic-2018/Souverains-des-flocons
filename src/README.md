@@ -15,4 +15,16 @@ HexaGrid possède les méthodes publiques suivantes :
 
 # Models
 
++ udpate(hexaGrid)
+  + Mets à jour la grille hexagonale selon les règles du Modèle
+  + hexaGrid : Type Grid
++ getNeighbors(hexaGrid, ijk)
+  + Generator des voisins de la cellule en (i,j,k)
+  + hexaGrid : Type Grid
+  + ijk : tuple des coordonnées hexagonales
+
 # Views
+
++ display(matrixGrid)
+  + Affiche la grilles des pixels
+  + matrixGrid : Type Grid
