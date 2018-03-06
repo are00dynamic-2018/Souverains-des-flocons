@@ -1,5 +1,5 @@
-#réaliser une fonction : centrale, edge. la fonction centrale remplace le bool en argument (a supprimer) teste si une cellule est la cellule centrale, idem pour edge.
-#Neighbors : determine les voisisns d'une celleule (prend un tuple de coordonnees en argument)
+#Fonctions a realiser : Central, Edge. la fonction Centrale teste si une cellule est la cellule centrale, idem pour edge (renvoient un Bool).
+#Neighbors : determine les voisisns d'une cellule (prend un tuple de coordonnees en argument, renvoie une liste de tupple ou un dictionnaire de tuple)
 
 def Init(beta, mat): #beta : background vapor level
     """float*array*bool->None
