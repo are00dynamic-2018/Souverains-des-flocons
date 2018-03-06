@@ -2,7 +2,7 @@
 #Neighbors : determine les voisisns d'une celleule (prend un tuple de coordonnees en argument)
 #NeighborsAverage : prend en argument une cellule et calcule la moyenne de ses 6 voisins
 
-def Init(beta, mat): #beta : background vapor level
+def Init(beta, mat): #mat: matrice des cellules, beta : background vapor level
     """float*array*bool->None
     Initialise toutes les cellules"""
     for i in mat[i, j]:
