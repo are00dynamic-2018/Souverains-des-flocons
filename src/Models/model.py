@@ -40,7 +40,7 @@ class Model:
     def __Receptive(self, hexaCell):
         """
         HexaCell -> bool
-        Renvoit True si la cellule est glacée ou a un voisin glacé
+        Renvoie True si la cellule est glacée ou a un voisin glacé
         """
         if hexaCell.data >= 1:
             return True
