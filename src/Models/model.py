@@ -6,6 +6,7 @@ class Model:
         """
         beta : float (0 <= b <= 1) background vapor level
         """
+        assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être comprise entre 0 et 1"
         self.beta = beta
 
     def InitHexaGrid(self, hexaGrid):
