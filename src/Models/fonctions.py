@@ -4,9 +4,9 @@
 def Init(beta, mat): #beta : background vapor level
     """float*array->None
     Initialise toutes les cellules"""
-    for i in mat[i, j]:
-        for j in mat[i, j]:
-            if Centrale(mat[i,j]):
+    for line in mat:
+        for j in line:
+            if Centrale(j):
                 mat[i, j]=beta
             else:
                 mat[i, j]=1
