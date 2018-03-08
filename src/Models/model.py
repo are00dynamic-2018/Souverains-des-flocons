@@ -5,6 +5,7 @@ class Model:
     def __init__(self, beta):
         """
         beta : float (0 <= b <= 1) background vapor level
+        Initialise le modèle
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être comprise entre 0 et 1"
         self.beta = beta
@@ -12,6 +13,7 @@ class Model:
     def InitHexaGrid(self, hexaGrid):
         """
         HexaGrid -> void
+        Initialise la grille : toutes les cellules à beta sauf la cellule centrale à 1
         """
         I,J,K = hexaGrid.getSize()
         for i in range(I):
@@ -22,6 +24,7 @@ class Model:
     def UpdateGrid(self, hexaGrid):
         """
         HexaGrid -> void
+        Met à jour la grille
         """
         pass
 
