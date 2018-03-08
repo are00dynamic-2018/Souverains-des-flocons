@@ -1,18 +1,33 @@
 #import numpy as np
+from .Controllers.hexaGrid import *
 
 class Model:
-    def __init__(self):
-        pass
+    def __init__(self, beta):
+        """
+        beta : float (0 <= b <= 1) background vapor level
+        """
+        self.beta = beta
 
-    def updateGrid(self, hexaGrid):
+    def InitHexaGrid(self, hexaGrid):
+        """
+        HexaGrid -> void
+        """
+        I,J,K = hexaGrid.getSize()
+        for i in range(I):
+            for j in range(J):
+                for k in range(K):
+                    hexaGrid[i,j,k] = if (i == I//2 and j == J//2 and k == K//2) 1 else self.beta
+
+    def UpdateGrid(self, hexaGrid):
         """
         HexaGrid -> void
         """
         pass
 
-    def getNeighbors(self, hexaGrid, ijk):
+    def GetNeighbors(self, hexaGrid, ijk):
         """
-        HexaGrid -> (int, int, int)
+        HexaGrid (int, int, int) -> (int, int, int)
         """
         pass
 
+m = Model(0.2)
