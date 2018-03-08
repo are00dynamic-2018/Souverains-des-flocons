@@ -17,6 +17,7 @@ TRAZIE Océane <br>
             
 ## Le modèle 
 
+
 ### Présentation
 
   Pour générer nos flocons, nous nous basons sur le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Chaque cellule a donc 6 voisins.
@@ -38,7 +39,9 @@ TRAZIE Océane <br>
   
  ### Initialisation et fonctionnement
  
- Pour l'initialisation, on commence avec une cellule centrale de la grille, dite cellule-germe, qui prend la valeur de β. Toutes les autres cellules de la grille prennent la valeur de 0.
+ Pour l'initialisation, on commence avec une cellule centrale de la grille, dite cellule-germe, qui prend la valeur de 1. Toutes les autres cellules de la grille prennent la valeur de β.
+ 
+ 
  
  
   
