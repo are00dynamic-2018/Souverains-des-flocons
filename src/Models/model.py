@@ -24,10 +24,4 @@ class Model:
         """
         pass
 
-    def GetNeighbors(self, hexaGrid, ijk):
-        """
-        HexaGrid (int, int, int) -> (int, int, int)
-        """
-        pass
-
 m = Model(0.2)
