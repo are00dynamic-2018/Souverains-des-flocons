@@ -24,6 +24,8 @@ TRAZIE Océane <br>
   
   ![Image of Devine Hexagonal Grid](http://catlikecoding.com/unity/tutorials/hex-map/part-1/about-hexagons/hexagon-grid.png)
   
+  Pour gérer la grille hexagonale, nous suivrons le procédé suivant : [HexagonalGrid](https://www.redblobgames.com/grids/hexagons/implementation.html)
+  
   Chaque cellule prend une valeur indiquant l'état de l'eau dans la cellule. Lorsque l'état d'une cellule x à un temps t, state(t, x) > 1, on considère que l'eau est solide. 
   
   Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont définis comme les sites étant "glacés" ou ayant un voisin glacé. 
