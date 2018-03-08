@@ -50,23 +50,23 @@ class Model:
         for cell in self.hexaGrid :
             if cell.edge :
                 continue
-                
+
             if self.__Receptive(cell) :
-                non_diff = cell.data
-            else :
-                diff = cell.data
+                cell.data["non_diff"] += self.gamma
+
+            cell.data["diff"] += (self.alpha/2) * (self.__NeighborsAverage(cell) - cell.data["diff"])
 
     def __Receptive(self, hexaCell):
         """
         HexaCell -> bool
         Renvoie True si la cellule est glacée ou a un voisin glacé
         """
-        if hexaCell.data >= 1:
+        if hexaCell.data["state"] >= 1:
             return True
 
         #neighborCell : HexaCell
         for neighborCell in self.hexaGrid.getNeighbors(hexaCell.ijk):
-            if neighborCell.data >= 1 :
+            if neighborCell.data["state"] >= 1 :
                 return True
 
         return False
@@ -78,7 +78,7 @@ class Model:
         """
         somme = 0.0
         for neighborCell in self.hexaGrid.getNeighbors(hexaCell.ijk) :
-            somme += neighborCell.data
+            somme += neighborCell.data["diff"]
         
         return somme/6
 
