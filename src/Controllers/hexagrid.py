@@ -6,6 +6,10 @@ Created on Thu Mar  1 15:48:38 2018
 """
 import numpy as np
 
+
+def validateCoords(ijk):
+    return sum(ijk) == 0
+
 class HexaCell(object):
     __slots__ = ("ijk", "data",)
     
@@ -14,6 +18,7 @@ class HexaCell(object):
         var = HexaCell(ijk)"""
         self.data = data
         self.ijk = ijk #ijk est un tuple
+        self.edge = False
     
     def __eq__(self, other):
         """vérifie si cell1 == cell2 (comparaison data)
@@ -22,15 +27,14 @@ class HexaCell(object):
         if type(self) is not type(other):
             return False
         
-        
-        return #TODO faudrait savoir à la fin!!
+        return self.data == other.data and self.ijk == other.ijk
     
     def __contains__(self, element):
         """vérifie si cell.data[element] existe"""
-        pass
+        return element in self.data
     
     def update(self, **data):
-         """stocke data dans la cellule"""
+        """stocke data dans la cellule"""
         pass
     
     def __len__(self):
@@ -38,7 +42,7 @@ class HexaCell(object):
         return len(self.data)
 
 class HexaGrid(object):
-    __slots__ = ("grid", "t_ijk")t_ikk
+    __slots__ = ("grid", "t_ijk")
     
     def __init__(self, t_ijk):
         """a = HexaGrid(t_ijk)
@@ -46,19 +50,27 @@ class HexaGrid(object):
         self.t_ijk = t_ijk
         self.grid
         
+    def __cube_to_axial(self, ijk):
+        return self.grid[ijk[0]][ijk[2]]
+        
     def __getitem__(self, ijk):
         """data = grid[ijk]"""
+        if not validateCoords(ijk):
+            raise LookupError
+            
         return grid[ijk[0]][ijk[2]]
     
     def __setitem__(self, ijk, data):
         """grid[ijk] = data <=> grid.__setitem__(ijk, data)"""
-        if grid[ijk[0]][ijk[2]]:
-            grid[ijk[0]][ijk[2]] = HexaCell(ijk, data)
-        else:
-            raise IndexError
+        if not validateCoords((i,j,k)):
+            raise LookupError
+           
+        grid[ijk[0]][ijk[2]] = HexaCell(ijk, data)
     
     def __delitem__(self, ijk):
         """del grid[ijk]"""
+        if not validateCoords((i,j,k)):
+            raise LookupError
         grid[ijk[0]][ijk[2]] = None
         
     def __iter__(self):
@@ -97,15 +109,20 @@ class HexaGrid(object):
     
     def update(self, ijk, **data):
         """met à jour la cellule ijk avec les données data"""
-        pass
+        if not validateCoords((i,j,k)):
+            raise LookupError
     
     def getNeighbors(self, ijk):
         """retourne itérativement les voisins de la case
         ijk"""
+        if not validateCoords((i,j,k)):
+            raise LookupError
+            
         for i in range(ijk[0]-1, ijk[0]+2):
-            for i in range(ijk[2]-1, ijk[2]+2):
-                if ijk[0] != i and ijk[2] != j:
-                    yield self.grid[i][j]
+            for j in range(ijk[1]-1, ijk[1]+2):
+                for k in range(ijk[2]-1, ijk[2]+2):
+                    if ijk != (i,j,k):
+                        yield self.grid[i][j]
         
     def gridToHexa(self):
         """retourne l'Hexagrid"""
