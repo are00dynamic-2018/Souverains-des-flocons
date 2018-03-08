@@ -6,11 +6,11 @@ class Model:
         """
         alpha : float (0 <= b <= 1) constante de diffusion
         beta : float (0 <= b <= 1) background vapor level
-        gamma : float (0 <= b <= 1) 
+        gamma : float (0 <= b <= 1) Addition de vapeur
         Initialise le modèle
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être compris entre 0 et 1"
-        assert 0 <= gamma and gamma <= 1, "La constante gamma doit être comprise entre 0 et 1"
+        assert 0 <= gamma and gamma <= 1, "La constante d'addition de vapeur gamma doit être comprise entre 0 et 1"
         assert 0 <= alpha and alpha <= 1, "La constante de diffusion alpha doit être comprise entre 0 et 1"
         
         self.alpha = alpha
@@ -18,6 +18,8 @@ class Model:
         self.gamma = gamma
 
         self.hexaGrid = hexaGrid
+
+        self.step = 0
 
     def InitHexaGrid(self):
         """
@@ -28,14 +30,31 @@ class Model:
         for i in range(I):
             for j in range(J):
                 for k in range(K):
-                    self.hexaGrid[i,j,k] = if (i == I//2 and j == J//2 and k == K//2) 1 else self.beta
+                    data = {}
+                    if (i == 0 and j == 0 and k == 0):
+                        data["state"] = 1
+                        data["diff"] = 0
+                        data["non_diff"] = 1
+                    else :
+                        data["state"] = self.beta
+                        data["diff"] = self.beta
+                        data["non_diff"] = 0
+                    self.hexaGrid[i,j,k] = data
 
     def UpdateGrid(self):
         """
         void -> void
         Met à jour la grille
         """
-        pass
+        self.step += 1
+        for cell in self.hexaGrid :
+            if cell.edge :
+                continue
+                
+            if self.__Receptive(cell) :
+                non_diff = cell.data
+            else :
+                diff = cell.data
 
     def __Receptive(self, hexaCell):
         """
@@ -64,6 +83,6 @@ class Model:
         return somme/6
 
     
-             
+           
 
 m = Model(0.2, 0.3)
