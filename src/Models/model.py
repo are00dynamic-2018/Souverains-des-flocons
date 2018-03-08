@@ -10,8 +10,8 @@ class Model:
         Initialise le modèle
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être compris entre 0 et 1"
-        assert 0 <= gamma and gamma <= 1, "la constante gamma doit être comprise entre 0 et 1"
-        assert 0 <= alpha and alpha <= 1, "la constante de diffusion alpha doit être comprise entre 0 et 1"
+        assert 0 <= gamma and gamma <= 1, "La constante gamma doit être comprise entre 0 et 1"
+        assert 0 <= alpha and alpha <= 1, "La constante de diffusion alpha doit être comprise entre 0 et 1"
         
         self.alpha = alpha
         self.beta = beta
@@ -51,6 +51,17 @@ class Model:
                 return True
 
         return False
+
+    def __NeighborsAverage(self, hexaCell):
+        """
+        HexaCell -> float
+        Renvoit la moyenne des voisins
+        """
+        somme = 0.0
+        for neighborCell in self.hexaGrid.getNeighbors(hexaCell.ijk) :
+            somme += neighborCell.data
+        
+        return somme/6
 
     
              
