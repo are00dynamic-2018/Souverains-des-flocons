@@ -43,7 +43,7 @@ TRAZIE Océane <br>
  
  Lors de l'exécution, les cellules limitrophes gardent toujours la valeur de β. 
  
- ![Image Of Divine Cells]https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexagrid.png
+ ![Image Of Divine Cells](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexagrid.png)
  
  
  
