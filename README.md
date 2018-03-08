@@ -23,7 +23,8 @@ TRAZIE Océane <br>
   
   Chaque cellule prend une valeur indiquant l'état de l'eau dans la cellule. Lorsque l'état d'une cellule x à un temps t, state(t, x) > 1, on considère que l'eau est solide. 
   
-  Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont définis comme les sites étant "glacés" ou ayant un voisin glacé. Les valeurs affectées aux cellules à chaque étape se font en additionant la valeur de la cellule à l'étape précédente, une quantité d'eau provenant d'autres cellules et une terme de diffusion.
+  Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont définis comme les sites étant "glacés" ou ayant un voisin glacé. 
+  Les valeurs affectées aux cellules à chaque étape se font en additionant la valeur de la cellule à l'étape précédente, une quantité d'eau provenant d'autres cellules et une terme de diffusion.
   
   state(t, x) = state(t-1, x) + γ + α ∇²(state(t-1, x))
   
