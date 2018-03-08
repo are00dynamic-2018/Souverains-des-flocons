@@ -15,6 +15,13 @@ HexaGrid possède les méthodes publiques suivantes :
 
 # Models
 
++ variables
+  + alpha : constante de diffusion
+  + beta : niveau de vapeur
+  + gamma : constante d'addition de vapeur
+  + step : compteur du nombre d'étapes (temps discret)
++ InitHexaGrid() 
+  + initialisation de la grille
 + udpate(hexaGrid)
   + Mets à jour la grille hexagonale selon les règles du Modèle
   + hexaGrid : Type Grid
