@@ -24,7 +24,7 @@ TRAZIE Océane <br>
   Chaque cellule prend une valeur indiquant l'état de l'eau dans la cellule. Lorsque l'état d'une cellule x, state(x) > 1, on considère que l'eau est solide. 
   Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont défins comme les sites étant "glacés" ou ayant un voisin glacé. Le modèle prend en compte trois paramètres: 
   
-  ⋅⋅* α : constante de diffusion (il sera expliqué plus tard)
-  ⋅⋅* β : teneur en vapeur d'eau de l'environnement
-  ⋅⋅* γ : quantité d'eau provenant d'en dehors de la cellule
+  + α : constante de diffusion (il sera expliqué plus tard)
+  + β : teneur en vapeur d'eau de l'environnement
+  + γ : quantité d'eau provenant d'en dehors de la cellule
   
