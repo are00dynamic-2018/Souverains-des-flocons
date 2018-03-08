@@ -41,7 +41,9 @@ TRAZIE Océane <br>
  
  Pour l'initialisation, on commence avec une cellule centrale de la grille, dite cellule-germe, qui prend la valeur de 1. Toutes les autres cellules de la grille prennent la valeur de β.
  
- Lors de l'exécution, les cellules limitrophes gardent toujours la valeur de β.  
+ Lors de l'exécution, les cellules limitrophes gardent toujours la valeur de β. 
+ 
+ ![Image Of Divine Cells](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexagrid.png)
  
  
  
