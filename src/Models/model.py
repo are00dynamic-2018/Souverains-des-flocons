@@ -1,14 +1,21 @@
-#import numpy as np
+import numpy as np
 from .Controllers.hexaGrid import *
 
 class Model:
-    def __init__(self, beta):
+    def __init__(self, alpha, beta, gamma):
         """
+        alpha : float (0 <= b <= 1) constante de diffusion
         beta : float (0 <= b <= 1) background vapor level
+        gamma : float (0 <= b <= 1) 
         Initialise le modèle
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être compris entre 0 et 1"
+        assert 0 <= gamma and gamma <= 1, "la constante gamma doit être comprise entre 0 et 1"
+        assert 0 <= alpha and alpha <= 1, "la constante de diffusion alpha doit être comprise entre 0 et 1"
+        
+        self.alpha = alpha
         self.beta = beta
+        self.gamma = gamma
 
     def InitHexaGrid(self, hexaGrid):
         """
@@ -28,4 +35,4 @@ class Model:
         """
         pass
 
-m = Model(0.2)
+m = Model(0.2, 0.3)
