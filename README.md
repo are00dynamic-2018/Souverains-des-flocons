@@ -17,9 +17,14 @@ TRAZIE Océane <br>
             
 ## Le modèle 
 
-  Nous utilisons le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Chaque cellule a donc 6 voisins.
+  Pour générer nos flocons, nous nous basons sur le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Chaque cellule a donc 6 voisins.
   
-  ![Image of Devine Hexagonal Grid] (http://catlikecoding.com/unity/tutorials/hex-map/part-1/about-hexagons/hexagon-grid.png)
+  ![Image of Devine Hexagonal Grid](http://catlikecoding.com/unity/tutorials/hex-map/part-1/about-hexagons/hexagon-grid.png)
   
-  Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et le **cellules non réceptives**.
+  Chaque cellule prend une valeur indiquant l'état de l'eau dans la cellule. Lorsque l'état d'une cellule x, state(x) > 1, on considère que l'eau est solide. 
+  Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont défins comme les sites étant "glacés" ou ayant un voisin glacé. Le modèle prend en compte trois paramètres: 
+  
+  ..* α : constante de diffusion (il sera expliqué plus tard)
+  ..* β : teneur en vapeur d'eau de l'environnement
+  ..* γ : quantité d'eau provenant d'en dehors de la cellule
   
