@@ -2,7 +2,7 @@
 #Neighbors : determine les voisisns d'une cellule (prend un tuple de coordonnees en argument, renvoie une liste de tupple ou un dictionnaire de tuple)
 
 def Init(beta, mat): #beta : background vapor level
-    """float*array*bool->None
+    """float*array->None
     Initialise toutes les cellules"""
     for i in mat[i, j]:
         for j in mat[i, j]:
