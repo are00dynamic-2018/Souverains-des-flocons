@@ -17,5 +17,9 @@ TRAZIE Océane <br>
             
 ## Le modèle 
 
-  Nous utilisons le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et le **cellules non réceptives**.
+  Nous utilisons le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Chaque cellule a donc 6 voisins.
+  
+  ![Image of Devine Hexagonal Grid] (http://catlikecoding.com/unity/tutorials/hex-map/part-1/)
+  
+  Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et le **cellules non réceptives**.
   
