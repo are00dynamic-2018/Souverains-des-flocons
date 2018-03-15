@@ -16,8 +16,7 @@ NEUTRAL_DATA = 0
 
 
 
-def validateCoords(ijk):
-    return sum(ijk) == 0
+
 
 def cube_to_axial(ijk):
     return np.array((ijk[0], ijk[2]))
@@ -62,21 +61,21 @@ class HexaCell(object):
         return len(self.data)
 
 class HexaGrid(object):
-    __slots__ = ("grid", "t", "centre", "ordre_parcours",
+    __slots__ = ("grid", "radius", "centre", "ordre_parcours",
                  "edges")
     
-    def __init__(self, t):
+    def __init__(self, radius):
         """a = HexaGrid(t)"""
-        self.t = t
+        self.radius = radius
         self.ordre_parcours = np.array([ (+1, -1, 0), (+1,0,-1), (0,+1,-1), 
                                 (-1,+1,0), (-1,0,+1), (0,-1,+1) ])
         self.clear()
-        self.centre = np.array(tuple(t-floor(t/2) for i in range(3)))
+        self.centre = np.array(tuple(radius for i in range(3)))
         self.getEdges()
         
     def __getitem__(self, ijk):
         """data = grid[ijk]"""
-        if not validateCoords(ijk):
+        if not self.validateCoords(ijk):
             raise IndexError
             
         i, j = cube_to_axial(self.absoluteCoords(ijk))
@@ -84,7 +83,7 @@ class HexaGrid(object):
     
     def __setitem__(self, ijk, data):
         """grid[ijk] = data <=> grid.__setitem__(ijk, data)"""
-        if not validateCoords(ijk):
+        if not self.validateCoords(ijk):
             raise IndexError
             
         i, j = cube_to_axial(self.absoluteCoords(ijk))
@@ -92,7 +91,7 @@ class HexaGrid(object):
     
     def __delitem__(self, ijk):
         """del grid[ijk]"""
-        if not validateCoords(ijk):
+        if not self.validateCoords(ijk):
             raise IndexError
             
         i, j = cube_to_axial(self.absoluteCoords(ijk))
@@ -101,7 +100,7 @@ class HexaGrid(object):
     def __iter__(self):
         """for data in grid:"""
         for ijk in self.keys():
-            yield HexaCell(self, ijk, self[ijk])
+            yield self[ijk]
     
     #défini par __iter__(self) qui retourne un générateur qui fournit __next__
     #def __next__(self):
@@ -123,7 +122,7 @@ class HexaGrid(object):
         
     def clear(self):
         """nettoie grid.data de toutes les celulles"""
-        self.grid = np.full(cube_to_axial((self.t,self.t,self.t)), 
+        self.grid = np.full((self.radius*2,self.radius*2), 
                             (NEUTRAL_DATA,), 
                             dtype=HEXACELL_TYPE)
     
@@ -131,12 +130,22 @@ class HexaGrid(object):
     def keys(self):
         """itere sur les coordonnées des cellules"""
         already_done = set()
-        for i in range(self.t):
-            for j in range(self.t):
+        radius = self.radius
+        for i in range(-radius, radius):
+            for j in range(max(-i, -i-radius), min(radius, -i+radius)):
                 ijk = (i,j,-j-i)
                 if ijk not in already_done:
                     already_done.add(ijk)
-                    yield self.userCoords(ijk)
+                    yield ijk
+    
+    def validateCoords(self, ijk):
+        r = self.radius
+        if sum(ijk) == 0:
+            if -r < ijk[0] < r:
+                if -r < ijk[1] < r:
+                    if-r < ijk[2] < r:
+                        return True
+        return False
     
     def userCoords(self, ijk):
         return ijk-self.centre
@@ -147,18 +156,18 @@ class HexaGrid(object):
     
     def gridSize(self):
         """renvoie la taille de grid"""
-        return self.t
+        return self.t*2
     
     #utiliser update de l'hexacell!!
     #def update(self, ijk, **data):
     #    """met à jour la cellule ijk avec les données data"""
-    #    if not validateCoords((i,j,k)):
+    #    if not self.validateCoords((i,j,k)):
     #        raise LookupError
     
     def getNeighbors(self, ijk):
         """retourne itérativement les voisins de la case
         ijk"""
-        if not validateCoords(ijk):
+        if not self.validateCoords(ijk):
             raise LookupError
             
         for coords in self.ordre_parcours:
@@ -169,10 +178,10 @@ class HexaGrid(object):
         """retourne un set des coordonnées des cellules sur 
         les bords de la grille"""
         self.edges = []
-        radius = self.t//2
-        ijk = (-radius, 0, radius) 
+        r = self.radius
+        ijk = (-r, 0, r) 
         for goSide in self.ordre_parcours:
-            for x in range(radius):
+            for x in range(r):
                self.edges.append(tuple(ijk))
                ijk += goSide
         
@@ -187,3 +196,18 @@ class HexaGrid(object):
     #def display(self):
     #    """retourne une forme prete à la representation pour l'hexagrid"""
     #    pass
+
+#tests:
+"""hg = HexaGrid(6).data)
+
+print("keys")
+for x in hg.keys():
+    print(x)
+    
+print("iter")
+for x in hg:
+    print(x.ijk)
+    
+print("edges")
+for x in hg.edges:
+    print(x)"""
