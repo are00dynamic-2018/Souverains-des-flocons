@@ -18,13 +18,18 @@ TRAZIE Océane
   Les cristaux de neige naissent et se développent au sein des nuages à température nettement négative. Sous l'action de mouvements ascendants au sein de l'atmosphère, de la vapeur d'eau provenant des couches basses de l'atmosphère remonte vers des couches atmosphériques d'altitude plus élevée. Elle s'y condense alors sur les microscopiques poussières en suspension dans l'air, soit sous la forme de micro-gouttelettes d'eau en surfusion soit sous celle d'un microscopique germe de glace : c'est la naissance du cristal. Débute ensuite sa phase de croissance : de la vapeur d'eau continue à se condenser sur le germe de glace initial, en provenance des micro-gouttelettes d'eau liquide surfondue également présentes dans le nuage, par effet Bergeron. La taille du cristal passe ainsi de quelques micromètres à quelques millimètres. Sa forme dépend principalement de la température à laquelle il se développe. On observe trois formes types : les étoiles, les plaquettes, les aiguilles et colonnes.
   *(source : meteofrance.fr)*
 
+## L'affichage
+
+Nous choisissons d'afficher les flocons que nous génèrerons sur une grille hexagonale. Cette dernière nous permet d'obtenir plus aisément les 6 voisisns de chaque cellulle (voir ci-dessous). De plus, cette affichage correspond au modèle physique : les molécules d'eau lorsqu'elles se solidifient adoptent un arrangement hexagonal. La grille hexagonale représente un espace vectoriel de dimension 4 : {(x, y, z, a) ∈ ℝ² | x + y + z = 0} avec (x, y, z) les coordonnées de chaque cellulle et a le data.
+
+![Image of Devine Hexagonal Grid](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexa.png)
             
 ## Le modèle 
 
 
 ### Présentation
-
-  Pour générer nos flocons, nous nous basons sur le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate représenté sur une grille hexagonale. Chaque cellule a donc 6 voisins.
+  
+  Pour générer nos flocons, nous nous basons sur le modèle de Clifford A. Reiter, mathématicien américain. C'est un modèle en deux dimensions qui ne nous permettra donc pas de représenter les formes tri-dimensionelles. Le modèle de Reiter est un automate dont chaque cellule a donc 6 voisins.
   
   ![Image of Devine Hexagonal Grid](http://catlikecoding.com/unity/tutorials/hex-map/part-1/about-hexagons/hexagon-grid.png)
   
