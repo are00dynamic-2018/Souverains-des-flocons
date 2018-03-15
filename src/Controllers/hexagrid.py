@@ -7,18 +7,31 @@ Created on Thu Mar  1 15:48:38 2018
 import numpy as np
 
 
+HEXACELL_TYPE = np.dtype([
+    ("ijk", np.int16 , (3,)), 
+    ("data", np.float32, 1),
+    ])
+NEUTRAL_DATA = 0
+
 def validateCoords(ijk):
     return sum(ijk) == 0
 
+def cube_to_axial(ijk):
+    return (ijk[0], ijk[2])
+
+def axial_to_cube(ik):
+    return (ik[0], -ik[0] - ik[1], ik[1])
+
 class HexaCell(object):
-    __slots__ = ("ijk", "data",)
+    __slots__ = ("ijk", "data", "edge", "mygrid")
     
-    def __init__(self, ijk, data):
+    def __init__(self, mygrid, ijk, data):
         """initialisation de HexaCell, lancé quand on fait:
         var = HexaCell(ijk)"""
+        self.mygrid = mygrid
         self.data = data
         self.ijk = ijk #ijk est un tuple
-        self.edge = False
+        self.edge = ijk in mygrid.getEdges()
     
     def __eq__(self, other):
         """vérifie si cell1 == cell2 (comparaison data)
@@ -33,45 +46,42 @@ class HexaCell(object):
         """vérifie si cell.data[element] existe"""
         return element in self.data
     
-    def update(self, **data):
+    def update(self, data):
         """stocke data dans la cellule"""
-        pass
+        self.data = data
+        self.mygrid[ijk] = (data,)
+        
     
     def __len__(self):
         """len(cell) retourne la longeur de data"""
         return len(self.data)
 
 class HexaGrid(object):
-    __slots__ = ("grid", "t_ijk")
+    __slots__ = ("grid", "t_ijk",)
     
     def __init__(self, t_ijk):
-        """a = HexaGrid(t_ijk)
-        self.grid = np."""
+        """a = HexaGrid(t_ijk)"""
         self.t_ijk = t_ijk
-        self.grid
-        
-    def __cube_to_axial(self, ijk):
-        return self.grid[ijk[0]][ijk[2]]
+        self.clear()
         
     def __getitem__(self, ijk):
         """data = grid[ijk]"""
         if not validateCoords(ijk):
             raise LookupError
             
-        return grid[ijk[0]][ijk[2]]
+        return HexaCell(self, ijk, grid[cube_to_axial(ijk)])
     
     def __setitem__(self, ijk, data):
         """grid[ijk] = data <=> grid.__setitem__(ijk, data)"""
         if not validateCoords((i,j,k)):
             raise LookupError
-           
-        grid[ijk[0]][ijk[2]] = HexaCell(ijk, data)
+        self.grid[cube_to_axial(ijk)] = (data,)
     
     def __delitem__(self, ijk):
         """del grid[ijk]"""
         if not validateCoords((i,j,k)):
             raise LookupError
-        grid[ijk[0]][ijk[2]] = None
+        self.grid[cube_to_axial(ijk)] = (NEUTRAL_DATA,)
         
     def __iter__(self):
         """for data in grid:"""
@@ -96,7 +106,9 @@ class HexaGrid(object):
         
     def clear(self):
         """nettoie grid.data de toutes les celulles"""
-        self.grid.clear()
+        self.grid = np.full(cube_to_axial(t_ijk), 
+                            (NEUTRAL_DATA,), 
+                            dtype=HEXACELL_TYPE)
     
     
     def keys(self):
@@ -107,10 +119,11 @@ class HexaGrid(object):
         """renvoie la taille de grid"""
         return self.t_ijk
     
-    def update(self, ijk, **data):
-        """met à jour la cellule ijk avec les données data"""
-        if not validateCoords((i,j,k)):
-            raise LookupError
+    #utiliser update de l'hexacell!!
+    #def update(self, ijk, **data):
+    #    """met à jour la cellule ijk avec les données data"""
+    #    if not validateCoords((i,j,k)):
+    #        raise LookupError
     
     def getNeighbors(self, ijk):
         """retourne itérativement les voisins de la case
@@ -122,7 +135,12 @@ class HexaGrid(object):
             for j in range(ijk[1]-1, ijk[1]+2):
                 for k in range(ijk[2]-1, ijk[2]+2):
                     if ijk != (i,j,k):
-                        yield self.grid[i][j]
+                        yield HexaCell(self, (i, j, k), self.grid[i, j])
+        
+    def getEdges(self):
+        """retourne un set des coordonnées des cellules sur 
+        les bords de la grille"""
+        return Set()
         
     def gridToHexa(self):
         """retourne l'Hexagrid"""
