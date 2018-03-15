@@ -1,5 +1,4 @@
 import numpy as np
-from .Controllers.hexaGrid import *
 
 class Model:
     def __init__(self, hexaGrid, alpha, beta, gamma):

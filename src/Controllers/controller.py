@@ -1,4 +1,5 @@
 from hexagrid import *
+from .Models.model import *
 
-hex = HexaGrid((1,1,1))
+m = Model()
 
