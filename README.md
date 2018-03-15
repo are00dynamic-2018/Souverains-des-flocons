@@ -55,6 +55,8 @@ On appelle **C**, l'ensemble des cellules. Chaque cellule prend une valeur réel
   
   On impose aux cellules se trouvant au bord de rester à β.
   
+  ![Image Of Divine Cells](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexagrid.png)
+  
   Les valeurs affectées aux cellules à chaque étape se font en additionant la valeur de la cellule à l'étape précédente, une quantité d'eau provenant d'autres cellules et une terme de diffusion.
   
   state(t, x) = state(t-1, x) + γ + α ∇²(state(t-1, x))
@@ -64,7 +66,7 @@ On appelle **C**, l'ensemble des cellules. Chaque cellule prend une valeur réel
   
 
  
- ![Image Of Divine Cells](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexagrid.png)
+ 
  
  
  
