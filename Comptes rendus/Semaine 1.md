@@ -1,5 +1,5 @@
 # Semaine 1
-### Têtes pleines et fichiers vides, avant de coder on PLANIFIE 
+"Têtes pleines et fichiers vides, avant de coder on PLANIFIE."
 
 + **Choix du modèle :** modèle de Reiter.
 
