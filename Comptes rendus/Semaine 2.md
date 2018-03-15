@@ -5,5 +5,5 @@
 + **étude du modèle, partie mathématique**: Documentation approfondie sur le modèle, formules mathématiques utilisées pour mettre à jour chaque cellule ainsi que sur la bibliothèque python "numpy".
 
 + **avancement du code**:
-- élaboration du squelette des 2 classes hexacell et hexagrid (cellule et grille), utilisation de la bibliothèque numpy.
-- début de la programmation du modèle (initiation de la grille, mise à jours de chaque état, etc.)
+  - élaboration du squelette des 2 classes hexacell et hexagrid (cellule et grille), utilisation de la bibliothèque numpy.
+  - début de la programmation du modèle (initiation de la grille, mise à jours de chaque état, etc.)
