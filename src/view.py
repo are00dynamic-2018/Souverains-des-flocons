@@ -43,7 +43,13 @@ class Window :
         self.controller = Controller(self.t_ijk, alpha, beta, gamma)
 
         self.controller.ResetGrid()
+        self._Display()
 
     def _NextStep(self):
         assert self.controller != None, "La grille n'est pas initialisée : appuyer sur Reset"
+        self.controller.NextStep()
+        self._Display()
+
+    def _Display(self):
+        pass
       

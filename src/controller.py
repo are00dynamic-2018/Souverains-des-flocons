@@ -4,7 +4,7 @@ from Models.model import *
 class Controller:
     def __init__(self, t_ijk, alpha, beta, gamma):
         self.model = Model(HexaGrid(t_ijk), alpha, beta, gamma)
-        
+
         self.ResetGrid()
 
     def ResetGrid(self):
@@ -12,3 +12,6 @@ class Controller:
 
     def NextStep(self):
         self.model.UpdateGrid()
+
+    def getGrid(self):
+        return self.model.hexaGrid.gridToMatrix()
