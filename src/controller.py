@@ -1,5 +1,6 @@
 from hexagrid import *
-from .Models.model import *
+
+from Models import *
 
 m = Model()
 
