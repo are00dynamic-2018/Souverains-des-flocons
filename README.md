@@ -20,7 +20,9 @@ TRAZIE Océane
 
 ## L'affichage
 
-Nous choisissons d'afficher les flocons que nous génèrerons sur une grille hexagonale. Cette dernière nous permet d'obtenir plus aisément les 6 voisisns de chaque cellulle (voir ci-dessous). De plus, cette affichage correspond au modèle physique : les molécules d'eau lorsqu'elles se solidifient adoptent un arrangement hexagonal. La grille hexagonale représente un espace vectoriel de dimension 4 : {(x, y, z, a) ∈ ℝ² | x + y + z = 0} avec (x, y, z) les coordonnées de chaque cellulle et a le data.
+Nous choisissons d'afficher les flocons que nous génèrerons sur une grille hexagonale. Cette dernière nous permet d'obtenir plus aisément les 6 voisisns de chaque cellulle (voir ci-dessous). De plus, cette affichage correspond au modèle physique : les molécules d'eau lorsqu'elles se solidifient adoptent un arrangement hexagonal. 
+
+La grille hexagonale représente un espace vectoriel de dimension 4 : {(x, y, z, a) ∈ ℝ² | x + y + z = 0} avec (x, y, z) les coordonnées de chaque cellulle et a le data.
 
 ![Image of Devine Hexagonal Grid](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/hexa.png)
             
