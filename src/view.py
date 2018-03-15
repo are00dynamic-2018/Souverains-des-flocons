@@ -4,6 +4,7 @@ from controller import *
 class Window :
     def __init__(self, t_ijk):
         self.controller = None
+        self.t_ijk = t_ijk
         self._InitUI()
 
     def _InitUI(self):
@@ -61,4 +62,6 @@ class Window :
 
     def _Display(self):
         pass
+
+w = Window((10,10,10))
       
