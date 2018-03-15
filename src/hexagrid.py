@@ -178,7 +178,7 @@ class HexaGrid(object):
         """retourne un set des coordonnées des cellules sur 
         les bords de la grille"""
         self.edges = []
-        r = self.radius
+        r = self.radius-1
         ijk = (-r, 0, r) 
         for goSide in self.ordre_parcours:
             for x in range(r):
@@ -198,7 +198,8 @@ class HexaGrid(object):
     #    pass
 
 #tests:
-"""hg = HexaGrid(6).data)
+    """
+hg = HexaGrid(6)
 
 print("keys")
 for x in hg.keys():
@@ -210,4 +211,5 @@ for x in hg:
     
 print("edges")
 for x in hg.edges:
-    print(x)"""
+    print(hg[x].ijk)
+"""
