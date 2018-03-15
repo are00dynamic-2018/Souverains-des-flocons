@@ -7,12 +7,15 @@ import numpy as np
 from math import floor
 
 
-
 HEXACELL_TYPE = np.dtype([
-    #("ijk", np.int16 , (3,)), 
-    ("data", np.float32, 1),
+    ("state", np.float32, 1),
+    ("diff", np.float32, 1),
+    ("non_diff", np.float32, 1),
     ])
-NEUTRAL_DATA = 0
+NEUTRAL_DATA = {
+    "state":0,
+    "diff":0,
+    "non_diff":0}
 
 
 
@@ -33,7 +36,7 @@ class HexaCell(object):
         """initialisation de HexaCell, lancé quand on fait:
         var = HexaCell(ijk)"""
         self.mygrid = mygrid
-        self.data = data[0]
+        self.data = dict(data)
         self.ijk = ijk #ijk est un tuple
         self.edge = tuple(ijk) in mygrid.edges
     
@@ -53,7 +56,7 @@ class HexaCell(object):
     def update(self, data):
         """stocke data dans la cellule"""
         self.data = data
-        self.mygrid[self.ijk] = (data,)
+        self.mygrid[self.ijk] = (data)
         
     
     def __len__(self):
@@ -87,7 +90,7 @@ class HexaGrid(object):
             raise IndexError
             
         i, j = cube_to_axial(self.absoluteCoords(ijk))
-        self.grid[i][j] = (data,)
+        self.grid[i][j] = (data)
     
     def __delitem__(self, ijk):
         """del grid[ijk]"""
@@ -95,7 +98,7 @@ class HexaGrid(object):
             raise IndexError
             
         i, j = cube_to_axial(self.absoluteCoords(ijk))
-        self.grid[i][j] = (NEUTRAL_DATA,)
+        self.grid[i][j] = (NEUTRAL_DATA)
         
     def __iter__(self):
         """for data in grid:"""
@@ -123,7 +126,7 @@ class HexaGrid(object):
     def clear(self):
         """nettoie grid.data de toutes les celulles"""
         self.grid = np.full((self.radius*2,self.radius*2), 
-                            (NEUTRAL_DATA,), 
+                            (NEUTRAL_DATA), 
                             dtype=HEXACELL_TYPE)
     
 
@@ -156,7 +159,7 @@ class HexaGrid(object):
     
     def gridSize(self):
         """renvoie la taille de grid"""
-        return self.t*2
+        return self.radius*2
     
     #utiliser update de l'hexacell!!
     #def update(self, ijk, **data):

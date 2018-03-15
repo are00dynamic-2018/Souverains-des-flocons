@@ -25,10 +25,10 @@ class Model:
         void -> void
         Initialise la grille : toutes les cellules à beta sauf la cellule centrale à 1
         """
-        I,J,K = self.hexaGrid.getSize()
-        for i in range(I):
-            for j in range(J):
-                for k in range(K):
+        s = self.hexaGrid.gridSize()
+        for i in range(s):
+            for j in range(s):
+                for k in range(s):
                     data = {}
                     if (i == 0 and j == 0 and k == 0):
                         data["state"] = 1

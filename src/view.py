@@ -63,5 +63,5 @@ class Window :
     def _Display(self):
         pass
 
-w = Window((10,10,10))
+w = Window(10)
       
