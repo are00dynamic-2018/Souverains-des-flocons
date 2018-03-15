@@ -4,10 +4,14 @@
 ![Image of Devine Snowflake](https://bridoz.com/wp-content/uploads/2014/05/neige11.jpg)
 
 ###### Membres
-MANSOUR Mélissa <br>
-MERLE-REMOND Julian <br>
-RUCHE Nicolas <br>
-TRAZIE Océane <br>
+MANSOUR Mélissa 
+
+MERLE-REMOND Julian 
+
+RUCHE Nicolas 
+
+TRAZIE Océane 
+
 
 ## Vous avez dit flocons ?
 
@@ -26,6 +30,9 @@ TRAZIE Océane <br>
   
   Pour gérer la grille hexagonale, nous suivrons le procédé suivant : [HexagonalGrid](https://www.redblobgames.com/grids/hexagons/implementation.html)
   
+
+  Notre modèle se base sur l'article suivant : [Article de Jessica Li](https://github.com/are00dynamic-2018/Souverains-des-flocons/blob/master/Docs/JessicaLiModelREITER.pdf)
+
   Chaque cellule prend une valeur indiquant l'état de l'eau dans la cellule. Lorsque l'état d'une cellule x à un temps t, state(t, x) > 1, on considère que l'eau est solide. 
   
   Nous divisons les cellules de la grille en 2 types : les **cellules réceptives** et les **cellules non réceptives**. Les sites réceptifs sont définis comme les sites étant "glacés" ou ayant un voisin glacé. 
