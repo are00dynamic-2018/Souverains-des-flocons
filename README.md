@@ -4,12 +4,9 @@
 ![Image of Devine Snowflake](https://bridoz.com/wp-content/uploads/2014/05/neige11.jpg)
 
 ###### Membres
-MANSOUR Mélissa 
-
-MERLE-REMOND Julian 
-
-RUCHE Nicolas 
-
+MANSOUR Mélissa,  
+MERLE-REMOND Julian,  
+RUCHE Nicolas,  
 TRAZIE Océane 
 
 
