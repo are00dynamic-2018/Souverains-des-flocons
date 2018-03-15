@@ -42,13 +42,13 @@ class Window :
         beta.grid(row=3, column=2)
         gamma.grid(row=3, column=3)
         
-        self.ResetGrid()
+        self._ResetGrid()
         self.window.mainloop()
 
     def _ResetGrid(self):
-        alpha = self.sliders.alpha.get()
-        beta = self.sliders.beta.get()
-        gamma = self.sliders.gamma.get()
+        alpha = self.sliders["alpha"].get()
+        beta = self.sliders["beta"].get()
+        gamma = self.sliders["gamma"].get()
         self.controller = Controller(self.t_ijk, alpha, beta, gamma)
 
         self.controller.ResetGrid()
