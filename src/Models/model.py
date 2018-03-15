@@ -82,6 +82,3 @@ class Model:
         return somme/6
 
     
-           
-
-m = Model(0.2, 0.3)
