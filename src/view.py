@@ -12,7 +12,7 @@ class Window :
         """
         # Initialisation
         self.window = Tk()
-        self.canvas = Canvas(self.window)
+        self.canvas = Canvas(self.window, width=400, height=400)
         
         self.window.title('fenetre')
 
@@ -33,6 +33,15 @@ class Window :
         self.sliders = dict(alpha=alpha, beta=beta, gamma=gamma)
         
         # Positionnement
+        
+        btn1.grid(row=2, column=0)
+        btn2.grid(row=1, column=0)
+        
+        self.canvas.grid(row=0, column=0)
+        alpha.grid(row=3, column=1)
+        beta.grid(row=3, column=2)
+        gamma.grid(row=3, column=3)
+        
         self.ResetGrid()
         self.window.mainloop()
 
