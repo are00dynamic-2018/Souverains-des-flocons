@@ -5,11 +5,8 @@
 
 ###### Membres
 MANSOUR Mélissa 
-
 MERLE-REMOND Julian 
-
 RUCHE Nicolas 
-
 TRAZIE Océane 
 
 
