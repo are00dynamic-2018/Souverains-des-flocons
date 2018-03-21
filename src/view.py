@@ -2,6 +2,8 @@ from controller import *
 from tkinter import *
 from math import sqrt, pi, cos, sin
 from time import sleep
+#multiprocess
+
 
 class Point:
     def __init__(self, x, y):
@@ -64,6 +66,7 @@ class Layout:
         return Layout(Orientation.FlatOrientation(), origin, size)
 
 class Window:
+    
     def __init__(self, mapRadius):
         self.mapRadius = mapRadius
         self.controller = Controller(0,0,0, self.mapRadius)
@@ -77,6 +80,27 @@ class Window:
         self.layout = Layout.FlatLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
 
         self._InitUI()
+        
+    def lockbutton(self, mybutton):
+        def wrap(f):
+            def new_f(*args, **kwargs):
+                self.buttons[mybutton].config(state=DISABLED)
+                ret = f(*args, **kwargs)
+                self.buttons[mybutton].config(state=DISABLED)
+            new_f.__name__ = f.__name__
+            return new_f
+        return wrap
+    
+    def activebutton(self, mybutton):
+        def wrap(f):
+            def new_f(*args, **kwargs):
+                self.buttons[mybutton].config(state=ACTIVE)
+                ret = f(*args, **kwargs)
+                self.buttons[mybutton].config(state=NORMAL)
+            new_f.__name__ = f.__name__
+            return new_f
+        return wrap
+        
     def _InitUI(self):
         self.window = Tk()
         self.canvas = Canvas(self.window, width=self.canvasWidth, height=self.canvasHeight, bg="black")
@@ -130,6 +154,7 @@ class Window:
         self.controller.ResetGrid()
         self._Display()
 
+    #@activebutton(self, "auto")
     def _Autoplay(self):
         steps = self.sliders["steps"].get()
         for i in range(steps):
@@ -159,6 +184,7 @@ class Window:
 
         self.canvas.create_polygon(coords, fill=colorSTR)
 
-w = Window(15)
+#pour faire fonctionner
+#w = Window(15)
 
       

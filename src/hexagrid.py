@@ -1,4 +1,10 @@
 class HexaCell:
+    __slots__ = ("q", "r", "s", 
+        "state", 
+        "diff", "non_diff", 
+        "oldDiff", "oldNonDiff", 
+        "isEdge")
+        
     def __init__(self, q, r, edge=False):
         self.q = q
         self.r = r
@@ -54,6 +60,8 @@ class HexaCell:
         return hash(float(self.q + 0.3)) + hash(float(self.r + 0.2))
 
 class HexaMap:
+    __slots__ = ("radius", "cells", "nbCellsWidth")
+    
     def __init__(self, radius):
         self.radius = radius
         self.cells = dict()
