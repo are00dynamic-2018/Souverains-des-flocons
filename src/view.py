@@ -35,7 +35,7 @@ class Layout:
         self.orientation = orientation
         self.origin = origin
 
-    def _HexToPixel(self, hexaCell):
+    def HexToPixel(self, hexaCell):
         """
         HexaCell -> Point
         """
@@ -55,7 +55,7 @@ class Layout:
         return Point(self.cellRadius * cos(angle) , self.cellRadius * sin(angle))
 
     def Corners(self, hexaCell):
-        center = self._HexToPixel(hexaCell)
+        center = self.HexToPixel(hexaCell)
         corners = []
         for i in range(0, 6):
             offset = self._CornerOffset(i)
@@ -121,7 +121,7 @@ class Window:
         
         alpha = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Alpha')
         beta = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Beta')
-        gamma = Scale(self.window, orient='horizontal', from_=0, to=0.2, resolution=0.0001, tickinterval=2, length=self.canvasWidth, label='Gamma')
+        gamma = Scale(self.window, orient='horizontal', from_=0, to=0.05, resolution=0.00001, tickinterval=2, length=self.canvasWidth, label='Gamma')
 
         steps = Scale(self.window, orient="horizontal", from_=1, to=2000, resolution=1, tickinterval=2, length=self.canvasWidth, label='Steps forward')
 
@@ -175,16 +175,25 @@ class Window:
         coords = list(map(lambda x : (x.x, x.y), coords))
 
         state = min(1, cell.state)
-        state *= 255
-        state = int(state)
+        color = self._LerpColor(state)
 
-        colorSTR = str(hex(state).split("x")[-1])
-        colorSTR = "#" + colorSTR + colorSTR + colorSTR
+        #print(color)
+        """self.canvas.create_polygon(coords, outline="white")
+        center = self.layout.HexToPixel(cell)
+        text = str(round(cell.state, 3)) + "\n" + str(cell.q) + " " + str(cell.r)
+        self.canvas.create_text(center.x, center.y, text=text, fill="white")"""
+        
 
+        self.canvas.create_polygon(coords, fill=color)
 
-        self.canvas.create_polygon(coords, fill=colorSTR)
+    def _LerpColor(self, t):
+        r,g,b = (0, 0,0)
+        R,G,B = (255, 255, 255)
 
-#pour faire fonctionner
-#w = Window(15)
+        nR = int(r * (1-t) + R * t)
+        nG = int(g * (1-t) + G * t)
+        nB = int(b * (1-t) + B * t)
 
-      
+        return "#" + str(hex(nR).split("x")[-1]) + str(hex(nG).split("x")[-1]) + str(hex(nB).split("x")[-1])
+
+ 
