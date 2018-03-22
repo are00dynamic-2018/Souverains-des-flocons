@@ -1,4 +1,5 @@
 from hexagrid import *
+import time
 
 class Model():
     def __init__(self, alpha, beta, gamma, mapRadius):
@@ -29,37 +30,47 @@ class Model():
                 cell.SetState(0, 1)
             else :
                 cell.SetState(self.beta, 0)
+        self._CellsNewState()
 
     def UpdateGrid(self):
+        old = time.time()
         self.step += 1
         for cell in self.hexaMap.cells.values():
             if cell.isEdge :
                 continue
-            diff = cell.oldDiff
-            non_diff = cell.oldNonDiff
-            if self._Receptive(cell):
-                non_diff += self.gamma
-            diff += (self.alpha/2) * (self._GetNeighborsAverage(cell) - diff)
+            diff = 0
+            non_diff = 0
+            receptive = self._Receptive(cell)
+
+            if receptive:
+                non_diff = cell.oldState + self.gamma
+            else :
+                diff = cell.oldState
+                diff = 1/2 * diff + 1/12 * self._GetNeighborsSum(cell)
+            #print(diff, non_diff)
             cell.SetState(diff, non_diff)
+        print(self.step, ":", time.time() - old, "s")
+        self._CellsNewState()
+
+    def _CellsNewState(self):
+        for cell in self.hexaMap.cells.values():
+            cell.UpdateState()
 
     def _Receptive(self, hexaCell):
         q,r,s = hexaCell.GetCoords()
         hexaCell = self.hexaMap[q,r]
-        if hexaCell.state >= 1 :
+        if hexaCell.oldState >= 1 :
             return True
         
         for cell in self.hexaMap.GetNeighbors(hexaCell):
-            if cell.state >= 1:
+            if cell.oldState >= 1:
                 return True
 
         return False
 
-    def _GetNeighborsAverage(self, hexaCell):
+    def _GetNeighborsSum(self, hexaCell):
         somme = 0
-        cpt = 0
         for cell in self.hexaMap.GetNeighbors(hexaCell):
-            somme += cell.oldDiff
-            cpt += 1
+            somme += cell.oldState
 
-        return somme / cpt
-
+        return somme
