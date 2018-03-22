@@ -1,17 +1,14 @@
 from hexagrid import *
-from Models.model import *
+from model import *
 
 class Controller:
-    def __init__(self, t_ijk, alpha, beta, gamma):
-        self.model = Model(HexaGrid(t_ijk), alpha, beta, gamma)
-
+    def __init__(self, alpha, beta, gamma, mapRadius):
+        self.model = Model(alpha, beta, gamma, mapRadius)
+        self.nbCellsWidth = self.model.hexaMap.nbCellsWidth
         self.ResetGrid()
-
+        
     def ResetGrid(self):
-        self.model.InitHexaGrid()
-
+        self.model.InitGrid()
+    
     def NextStep(self):
         self.model.UpdateGrid()
-
-    def getGrid(self):
-        return self.model.hexaGrid.gridToMatrix()
