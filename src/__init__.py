@@ -1,1 +1,1 @@
-pass
+w = Window(15)
