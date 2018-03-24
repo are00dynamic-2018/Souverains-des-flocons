@@ -1,8 +1,6 @@
 class HexaCell:
     __slots__ = ("q", "r", "s", 
-        "state", 
-        "diff", "non_diff", 
-        "oldDiff", "oldNonDiff", 
+        "state", "oldState",
         "isEdge")
         
     def __init__(self, q, r, edge=False):
@@ -10,10 +8,7 @@ class HexaCell:
         self.r = r
         self.s = -q - r
         self.state = 0
-        self.diff = 0
-        self.non_diff = 0
-        self.oldDiff = 0
-        self.oldNonDiff = 0
+        self.oldState = 0
 
         self.isEdge = edge
 
@@ -21,11 +16,10 @@ class HexaCell:
         return self.q, self.r, self.s
     
     def SetState(self, diff, non_diff):
-        self.oldDiff = self.diff
-        self.oldNonDiff = self.non_diff
         self.state = diff + non_diff
-        self.diff = diff
-        self.non_diff = non_diff
+
+    def UpdateState(self):
+        self.oldState = self.state
 
     def Distance(self, other):
         return len(self - other)
@@ -104,4 +98,3 @@ class HexaMap:
         for cell in self.cells.values():
             cell.isEdge = self.NeighborsCount(cell) != 6
        
-

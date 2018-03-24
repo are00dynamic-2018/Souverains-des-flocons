@@ -1,1 +1,3 @@
-w = Window(15)
+from view import Window
+
+w = Window(50)
