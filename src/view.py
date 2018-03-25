@@ -1,8 +1,6 @@
 from controller import *
 from tkinter import *
 from math import sqrt, pi, cos, sin
-from time import sleep
-#multiprocess
 
 
 class Point:
@@ -17,14 +15,20 @@ class Point:
         return "({},{})".format(self.x, self.y)
 
 class Orientation:
-    def __init__(self, mat):
+    def __init__(self, mat, startAngle):
         """
-        (float, float, float, float)
+        (float, float, float, float), float
+        mat : Rotation Matrix
+        startAngle : angle in degrees, for the corners
         """
         self.f0, self.f1, self.f2, self.f3 = mat
+        self.startAngle = startAngle
 
     def FlatOrientation():
-        return Orientation((3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0)))
+        return Orientation((3 / 2, 0, sqrt(3) / 2, sqrt(3)), 0)
+
+    def PointyOrientation():
+        return Orientation((sqrt(3), sqrt(3) / 2, 0, 3/2), 30)
 
 class Layout:
     def __init__(self, orientation, origin, cellRadius):
@@ -37,7 +41,7 @@ class Layout:
 
     def HexToPixel(self, hexaCell):
         """
-        HexaCell -> Point
+        HexaCell -> Center Point On Screen
         """
         o = self.orientation
         x = (o.f0 * hexaCell.q + o.f1 * hexaCell.r) * self.cellRadius
@@ -46,12 +50,12 @@ class Layout:
 
     def _CornerOffset(self, corner):
         """
-        int
+        int : the ith corner, must be an integer between 0 and 5
         """
         corner = int(corner)
         assert 0 <= corner and corner < 6, "Corner's number muste between 0 and 5"
 
-        angle = 2 * pi * corner / 6
+        angle = pi/3 * (corner + self.orientation.startAngle * 1/60)
         return Point(self.cellRadius * cos(angle) , self.cellRadius * sin(angle))
 
     def Corners(self, hexaCell):
@@ -62,14 +66,18 @@ class Layout:
             corners.append(Point(int(center.x + offset.x), int(center.y + offset.y)))
         return corners
 
-    def FlatLayout(origin, size):
-        return Layout(Orientation.FlatOrientation(), origin, size)
+    def FlatLayout(origin, cellRadius):
+        return Layout(Orientation.FlatOrientation(), origin, cellRadius)
+
+    def PointyLayout(origin, cellRadius):
+        return Layout(Orientation.PointyOrientation(), origin, cellRadius)
 
 class Window:
     
-    def __init__(self, mapRadius):
-        self.mapRadius = mapRadius
-        self.controller = Controller(0,0,0, self.mapRadius)
+    def __init__(self, c):
+        assert type(c) is Controller, "{} n'est pas un controller".format(type(c))
+        self.controller = c
+        self.mapRadius = self.controller.model.hexaMap.radius
 
         size = 500
         self.canvasWidth = size
@@ -77,7 +85,7 @@ class Window:
 
         hexaWidth = size/self.controller.nbCellsWidth
         hexaRadius = hexaWidth/2
-        self.layout = Layout.FlatLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
+        self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
 
         self._InitUI()
         
@@ -141,7 +149,7 @@ class Window:
         gamma.grid(row=4, column=0)
         steps.grid(row=5, column=0)
         
-        self._ResetGrid()
+        self._Display()
         self.window.mainloop()
 
 
@@ -178,10 +186,15 @@ class Window:
         color = self._LerpColor(state)
 
         #print(color)
-        """self.canvas.create_polygon(coords, outline="white")
-        center = self.layout.HexToPixel(cell)
-        text = str(round(cell.state, 3)) + "\n" + str(cell.q) + " " + str(cell.r)
-        self.canvas.create_text(center.x, center.y, text=text, fill="white")"""
+        """
+        if cell.isEdge:
+            self.canvas.create_polygon(coords, fill="white")
+        else:
+            self.canvas.create_polygon(coords, outline="white")
+            center = self.layout.HexToPixel(cell)
+            text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
+            self.canvas.create_text(center.x, center.y, text=text, fill="white")
+        """      
         
 
         self.canvas.create_polygon(coords, fill=color)

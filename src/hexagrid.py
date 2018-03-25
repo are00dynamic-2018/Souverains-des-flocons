@@ -3,31 +3,28 @@ class HexaCell:
         "state", "oldState",
         "isEdge")
         
-    def __init__(self, q, r, edge=False):
+    def __init__(self, q, r, state = 0, edge=False):
         self.q = q
         self.r = r
         self.s = -q - r
-        self.state = 0
-        self.oldState = 0
+        self.state = state
+        self.oldState = state
 
         self.isEdge = edge
 
     def GetCoords(self):
         return self.q, self.r, self.s
     
-    def SetState(self, diff, non_diff):
-        self.state = diff + non_diff
+    def SetState(self, state):
+        self.state = state
 
     def UpdateState(self):
         self.oldState = self.state
 
-    def Distance(self, other):
-        return len(self - other)
-
     def GetFalseNeighbors(self):
         offsets = [(1,0), (1,-1), (0,-1), (-1,0), (-1,1), (0,1)]
         for q, r in offsets:
-            yield self + HexaCell(q, r)
+            yield self.q + q, self.r + r
 
     def __eq__(self, other):
         return self.q == other.q and self.r == other.r and self.s == other.s
@@ -50,9 +47,6 @@ class HexaCell:
     def __len__(self):
         return abs(self.s)
 
-    def __hash__(self):
-        return hash(float(self.q + 0.3)) + hash(float(self.r + 0.2))
-
 class HexaMap:
     __slots__ = ("radius", "cells", "nbCellsWidth")
     
@@ -63,24 +57,38 @@ class HexaMap:
 
         self._InitMap()
 
-    def __getitem__(self, qr):
+    def _ValidateCoords(self, qr):
         q,r = qr
-        cell = HexaCell(q,r)
-        if cell in self.cells:
-            return self.cells[cell]
+        if - self.radius <= q <= self.radius:
+            r1 = max(-self.radius, - q - self.radius)
+            r2 = min(self.radius, - q + self.radius)
+            if r1 <= r <= r2:
+                return True
+        return False
+
+    def __getitem__(self, qr):
+        if self._ValidateCoords(qr):
+            return self.cells[qr]
+        else:
+            raise LookupError
+
+    def __setitem__(self, qr, value):
+        if self._ValidateCoords(qr):
+            assert type(value) is HexaCell, "Pas une hexacell"
+            self.cells[qr] = value
         else:
             raise LookupError
 
     def GetNeighbors(self, hexaCell):
-        for cell in hexaCell.GetFalseNeighbors():
-            if cell in self.cells:
-                yield self.cells[cell]
+        for qr in hexaCell.GetFalseNeighbors():
+            if self._ValidateCoords(qr):
+                yield self[qr]
 
     def GetAllNeighbors(self, hexaCell):
         neighbors = []
-        for cell in hexaCell.GetFalseNeighbors():
-            if cell in self.cells:
-                neighbors.append(self.cells[cell])
+        for qr in hexaCell.GetFalseNeighbors():
+            if self._ValidateCoords(qr):
+                neighbors.append(self[qr])
         return neighbors
 
     def NeighborsCount(self, hexaCell):
@@ -93,7 +101,7 @@ class HexaMap:
             r2 = min(self.radius, - q + self.radius)
             for r in range(r1, r2 + 1):
                 cell = HexaCell(q,r)
-                self.cells[cell] = cell
+                self.cells[(q,r)] = cell
 
         for cell in self.cells.values():
             cell.isEdge = self.NeighborsCount(cell) != 6
