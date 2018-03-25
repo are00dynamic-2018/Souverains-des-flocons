@@ -162,12 +162,13 @@ class Window:
         self.controller.ResetGrid()
         self._Display()
 
-    #@activebutton(self, "auto")
+    
     def _Autoplay(self):
         steps = self.sliders["steps"].get()
         for i in range(steps):
             self._NextStep()
-            #sleep(0.2)
+            self._Display()
+            self.canvas.update()
 
     def _NextStep(self):
         assert self.controller != None, "La grille n'est pas initialisée : appuyer sur Reset"
