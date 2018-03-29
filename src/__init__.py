@@ -5,11 +5,10 @@ import controller as co
 
 
 mapRad = 30
-alpha = 1
-beta = 0.3
-gamma = 0.01
+beta = 0.4
+gamma = 0.0001
 
-c = co.Controller(alpha, beta, gamma, mapRad)
+c = co.Controller(beta, gamma, mapRad)
 
 
 w = v.Window(c)

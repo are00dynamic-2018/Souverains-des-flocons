@@ -129,13 +129,12 @@ class Window:
 
         self.timeLabel= Label(self.window, textvariable=text)
         
-        alpha = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Alpha')
-        beta = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Beta')
+        beta = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.05, tickinterval=2, length=self.canvasWidth, label='Beta')
         gamma = Scale(self.window, orient='horizontal', from_=0, to=0.05, resolution=0.00001, tickinterval=2, length=self.canvasWidth, label='Gamma')
 
         steps = Scale(self.window, orient="horizontal", from_=1, to=2000, resolution=1, tickinterval=2, length=self.canvasWidth, label='Steps forward')
 
-        self.sliders = dict(alpha=alpha, beta=beta, gamma=gamma, steps=steps)
+        self.sliders = dict(beta=beta, gamma=gamma, steps=steps)
         
         # Positionnement
 
@@ -146,17 +145,16 @@ class Window:
         btn3.grid(row=1, column=2)
         
         
-        alpha.grid(row=2, column=0)
-        beta.grid(row=3, column=0)
-        gamma.grid(row=4, column=0)
-        steps.grid(row=5, column=0)
+        
+        beta.grid(row=2, column=0)
+        gamma.grid(row=3, column=0)
+        steps.grid(row=4, column=0)
         
         self._Display()
         self.window.mainloop()
 
 
     def _ResetGrid(self):
-        alpha = self.sliders["alpha"].get()
         beta = self.sliders["beta"].get()
         gamma = self.sliders["gamma"].get()
         self.controller = Controller(alpha, beta, gamma, self.mapRadius)

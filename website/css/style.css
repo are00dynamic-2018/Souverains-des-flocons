@@ -86,15 +86,34 @@ body, html
     font-family: "justtellmewhat";
 }
 
-#snowFlakes img
+#snowFlakes
+{
+    list-style-type: none;
+}
+
+img
 {
     max-width: 70%;
+    height: auto;
     border-radius: 15px;
+}
+
+.important
+{
+    font-weight: bold;
+    font-size: 1.05em;
+    color: #016dff;
+    font-family: "justtellmewhat";
+}
+
+figcaption
+{
+    font-style: italic;
 }
 
 @media screen and (max-width: 992px) 
 {
-    #snowFlakes img 
+    img 
     {
         max-width: 50%;
     }

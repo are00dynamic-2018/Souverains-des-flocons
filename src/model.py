@@ -2,7 +2,7 @@ from hexagrid import *
 import time
 
 class Model():
-    def __init__(self, alpha, beta, gamma, mapRadius):
+    def __init__(self, beta, gamma, mapRadius):
         """
         alpha : float (0 <= b <= 1) constante de diffusion
         beta : float (0 <= b <= 1) background vapor level
@@ -11,14 +11,13 @@ class Model():
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être compris entre 0 et 1"
         assert 0 <= gamma and gamma <= 1, "La constante d'addition de vapeur gamma doit être comprise entre 0 et 1"
-        assert 0 <= alpha and alpha <= 1, "La constante de diffusion alpha doit être comprise entre 0 et 1"
         assert mapRadius >= 0, "Le rayon de la carte doit être positif"
 
-        self.alpha = alpha
+        
         self.beta = beta
         self.gamma = gamma
 
-        print("Model", alpha, beta, gamma)
+        print("Model", beta, gamma)
 
         self.hexaMap = HexaMap(mapRadius)
 
@@ -34,7 +33,6 @@ class Model():
         self._CellsNewState()
 
     def UpdateGrid(self):
-        old = time.time()
         self.step += 1
 
         rec = HexaMap(self.hexaMap.radius)
@@ -66,7 +64,7 @@ class Model():
             cell = HexaCell(q,r, nonRecCell.state + recCell.state, recCell.isEdge)
             self.hexaMap.cells[qr] = cell
             
-        print(self.step, ":", time.time() - old, "s")
+       
         self._CellsNewState()
 
     def _CellsNewState(self):

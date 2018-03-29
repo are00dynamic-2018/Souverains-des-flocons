@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="website/css/style.css">
     <script src="website/js/jquery.js"></script>
     <script src="website/bootstrap/js/bootstrap.min.js"></script>
+    <script src="website/js/jqmath.js"></script>
 </head>
 
 <body class="text-center">
@@ -59,43 +60,72 @@
                 Nous avons étudié la formation des flocons de neige.
             </p>
             <p>
-                La forme des flocons dépend en grande partie de la température ambiante.
+                La forme des flocons dépend en grande partie de la <span class="important">température</span> et de l'<span class="important">humidité</span> ambiantes.
             </p>
             <p>
-                Dans le plan, on peut observer entre autres :
+                Dans le plan, on peut observer, entre autres :
             </p>
             <ul id="snowFlakes" class="d-md-flex justify-content-around">
                 <li>
                     <figure>
-                        <img class="img-fluid" src="website/images/stellarDendrites.jpg" alt="Stellar Dendrites">
+                        <img src="website/images/stellarDendrites.jpg" alt="Stellar Dendrites">
                         <figcaption>
-                            Les dendrites stellaires
+                            Les dendrites stellaires (Stellar Dendrites)
                         </figcaption>
                     </figure>
                 </li>
                 <li>
                     <figure>
-                        <img class="img-fluid" src="website/images/fernlike.jpg" alt="Fernlike snowflake">
+                        <img src="website/images/fernlike.jpg" alt="Fernlike snowflake">
                         <figcaption>
-                            Les flocons en fougère (Fernlike)
+                            Les flocons en fougère (Fernlike snowflakes)
                         </figcaption>
                     </figure>
                 </li>
                 <li>
                     <figure>
-                        <img class="img-fluid" src="website/images/hexagonalPlate.jpg" alt="Hexagonal plate">
+                        <img src="website/images/hexagonalPlate.jpg" alt="Hexagonal plate">
                         <figcaption>
-                            Les assiettes hexagonales
+                            Poussière de diamant (Diamond dust)
                         </figcaption>
                     </figure>
                 </li>
             </ul>
+            <p>
+                On remarque les flocons ont une forme d'<span class="important">hexagone</span>.
+            </p>
+            <p>
+                Ceci est dû aux forces d'attractions et de répulsions des molécules d'eau :
+            </p>
+            <figure>
+                <img src="website/images/H2O.jpg" alt="Molécules d'H2O">
+                <figcaption>
+                    Agencement hexagonal des molécules d'eau et liaisons hydrogènes
+                </figcaption>
+            </figure>
+            <p>
+                Pour simuler une telle croissance, nous avons implémenté une grille hexagonale.
+            </p>
         </div>
     </section>
 
     <section class="section" id="model">
         <div class="container-fluid">
             <h1 class="importantHeader">Le modèle</h1>
+            <p>
+                Le modèle repose sur la<span class="important">diffusion</span> de vapeur d'eau.
+            </p>
+            <p>
+                
+            </p>
+
+
+            <p>
+                On pave le plan de cellules hexagonales. Chaque cellule représente une petite portion du plan.
+            </p>
+            <p>
+                $$∂c/∂t = D∇²c$$
+            </p>
         </div>
     </section>
 
@@ -114,10 +144,10 @@
     <section>
         <div class="container">
             <h1>Bibliographie</h1>
-            <h2>Vidéos</h2>
+            <h2>Articles</h2>
             <ul>
                 <li>
-                    <a href="https://www.youtube.com/watch?v=MCA2VmDVzEo">Vidéo formation de flocons</a>
+                    <a href="http://www.storyofsnow.com/media/blogs/a/March2011/Why%206%20corners%20on%20snow-%20J%20Nelson.pdf">Cristal hexagonal</a>
                 </li>
             </ul>
         </div>

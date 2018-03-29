@@ -2,8 +2,8 @@ from hexagrid import *
 from model import *
 
 class Controller:
-    def __init__(self, alpha, beta, gamma, mapRadius):
-        self.model = Model(alpha, beta, gamma, mapRadius)
+    def __init__(self, beta, gamma, mapRadius):
+        self.model = Model(beta, gamma, mapRadius)
         self.nbCellsWidth = self.model.hexaMap.nbCellsWidth
         self.ResetGrid()
         
