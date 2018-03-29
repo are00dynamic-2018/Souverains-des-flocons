@@ -89,6 +89,15 @@ body, html
 #snowFlakes img
 {
     max-width: 70%;
+    border-radius: 15px;
+}
+
+@media screen and (max-width: 992px) 
+{
+    #snowFlakes img 
+    {
+        max-width: 50%;
+    }
 }
 
 @media screen and (min-width: 992px) 
