@@ -179,7 +179,7 @@ class Window:
         d = t.time()
         self.controller.NextStep()
         self._Display()
-        print("{} : {}s".format(self.step,round(t.time() - d, 4))
+        print("{} : {}s".format(self.step,round(t.time() - d, 4)))
 
     def _Display(self):
         for cell in self.controller.model.hexaMap.cells.values():
