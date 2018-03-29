@@ -6,7 +6,7 @@ import controller as co
 
 mapRad = 25
 beta = 0.4
-gamma = 0.0001
+gamma = 0.001
 
 c = co.Controller(beta, gamma, mapRad)
 

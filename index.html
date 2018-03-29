@@ -166,7 +166,7 @@
                 $$s(q,r) = q² + r³$$
             </p>
             <p>
-                $∇²s = (∂²s)/(∂q²) + (∂²s)/(∂r²) = 2 + 6r$
+                $∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²} = 2 + 6r$
             </p>
             <h2>Règles du modèle</h2>
             <p>
@@ -197,10 +197,10 @@
                 Chaque cellule $(q,r)$ de la deuxième grille suit l'équation de diffusion :
             </p>
             <p>
-                $$(∂s(q,r,t)))/∂t = ∇²s = (∂²s)/(∂q²) + (∂²s)/(∂r²)$$
+                $${∂s(q,r,t))}/∂t = ∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²}$$
             </p>
             <p>
-                On peut approximer cette variation de la concentration d'eau de $(q,r)$ :
+                On peut approximer cette variation de la concentration d'eau pour chaque cellule $c$ :
             </p>
             <p>
                 <span class="important">$s(c,t+1) = 1/2s(c,t) + 1/12∑_{c'∈V(c)}s(c',t)$</span>
@@ -208,6 +208,11 @@
             <p>
                 Où $V(c)$ désigne les cellules voisines de c.
             </p>
+            <h3>Fusion des grilles</h3>
+            <p>
+                On crée une 3ème grille où chaque cellule est la somme de celles des grilles précédentes.
+            </p>
+            <h3>Exemple</h3>
 
         </div>
     </section>
