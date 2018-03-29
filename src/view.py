@@ -1,3 +1,4 @@
+import threading as th
 from controller import *
 from tkinter import *
 from math import sqrt, pi, cos, sin
@@ -76,6 +77,9 @@ class Window:
     
     def __init__(self, c):
         assert type(c) is Controller, "{} n'est pas un controller".format(type(c))
+        self.task_running = th.Lock()
+        self.ns_thr = None
+        
         self.controller = c
         self.mapRadius = self.controller.model.hexaMap.radius
 
@@ -87,6 +91,8 @@ class Window:
         hexaRadius = hexaWidth/2
         self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
 
+        self.display_thr = None
+        self._DisplayLoop()
         self._InitUI()
         
     def lockbutton(self, mybutton):
@@ -149,36 +155,61 @@ class Window:
         gamma.grid(row=4, column=0)
         steps.grid(row=5, column=0)
         
-        self._Display()
+        
         self.window.mainloop()
 
 
     def _ResetGrid(self):
-        alpha = self.sliders["alpha"].get()
-        beta = self.sliders["beta"].get()
-        gamma = self.sliders["gamma"].get()
-        self.controller = Controller(alpha, beta, gamma, self.mapRadius)
-
-        self.controller.ResetGrid()
-        self._Display()
+        if not self.task_running.locked():
+            alpha = self.sliders["alpha"].get()
+            beta = self.sliders["beta"].get()
+            gamma = self.sliders["gamma"].get()
+            self.controller = Controller(alpha, beta, gamma, self.mapRadius)
+            self.controller.ResetGrid()
 
     
     def _Autoplay(self):
-        steps = self.sliders["steps"].get()
-        for i in range(steps):
-            self._NextStep()
-            self._Display()
-            self.canvas.update()
+        if not self.task_running.locked():
+            steps = self.sliders["steps"].get()
+            for i in range(steps):
+                self._NextStep()
 
     def _NextStep(self):
         assert self.controller != None, "La grille n'est pas initialisée : appuyer sur Reset"
-        self.controller.NextStep()
-        self._Display()
+        if not self.task_running.locked():
+            if not self.ns_thr or not self.ns_thr.is_alive():
+                def threaded_step():
+                    with self.task_running:
+                        print("running ns thread")
+                        self.controller.NextStep()
+                    print("end ns thread")
+                
+                self.ns_thr = th.Thread(target=threaded_step)
+                self.ns_thr.start()
 
-    def _Display(self):
-        for cell in self.controller.model.hexaMap.cells.values():
-            self._DrawHexa(cell)
-
+    def _DisplayLoop(self):
+        def threaded_DisplayLoop():
+            from time import sleep
+            print("display loop thread started")
+            while True:
+                try:
+                    self.canvas
+                except AttributeError:
+                    sleep(0.4)
+                    continue
+                
+                if not self.task_running.locked():
+                    with self.task_running:
+                        hexa_values = (val for val in self.controller.model.hexaMap.cells.values())
+                    for cell in hexa_values:
+                        self._DrawHexa(cell)
+                self.canvas.update()
+                print("hex drawn!")
+                sleep(0.4)
+        
+        self.display_thr = th.Thread(target=threaded_DisplayLoop, daemon=True)
+        self.display_thr.start()
+    
     def _DrawHexa(self, cell):
         coords = self.layout.Corners(cell)
         coords = list(map(lambda x : (x.x, x.y), coords))
@@ -195,8 +226,7 @@ class Window:
             center = self.layout.HexToPixel(cell)
             text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
             self.canvas.create_text(center.x, center.y, text=text, fill="white")
-        """      
-        
+        """
 
         self.canvas.create_polygon(coords, fill=color)
 
