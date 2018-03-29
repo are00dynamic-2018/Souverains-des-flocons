@@ -201,7 +201,7 @@ class Window:
         self.canvas.create_polygon(coords, fill=color)
 
     def _LerpColor(self, t):
-        r,g,b = (0, 0,0)
+        r,g,b = (66, 134, 244)
         R,G,B = (255, 255, 255)
 
         nR = int(r * (1-t) + R * t)
