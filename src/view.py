@@ -1,6 +1,7 @@
 from controller import *
 from tkinter import *
 from math import sqrt, pi, cos, sin
+import time as t
 
 
 class Point:
@@ -82,6 +83,7 @@ class Window:
         size = 500
         self.canvasWidth = size
         self.canvasHeight = size
+        self.step = 0
 
         hexaWidth = size/self.controller.nbCellsWidth
         hexaRadius = hexaWidth/2
@@ -169,11 +171,15 @@ class Window:
             self._NextStep()
             self._Display()
             self.canvas.update()
+        print("AUTO FINI -----------")
 
     def _NextStep(self):
         assert self.controller != None, "La grille n'est pas initialisée : appuyer sur Reset"
+        self.step += 1
+        d = t.time()
         self.controller.NextStep()
         self._Display()
+        print("{} : {}s".format(self.step,round(t.time() - d, 4))
 
     def _Display(self):
         for cell in self.controller.model.hexaMap.cells.values():
