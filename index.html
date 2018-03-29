@@ -60,7 +60,9 @@
                 Nous avons étudié la formation des flocons de neige.
             </p>
             <p>
-                La forme des flocons dépend en grande partie de la <span class="important">température</span> et de l'<span class="important">humidité</span> ambiantes.
+                La forme des flocons dépend en grande partie de la
+                <span class="important">température</span> et de l'
+                <span class="important">humidité</span> ambiantes.
             </p>
             <p>
                 Dans le plan, on peut observer, entre autres :
@@ -92,7 +94,8 @@
                 </li>
             </ul>
             <p>
-                On remarque les flocons ont une forme d'<span class="important">hexagone</span>.
+                On remarque les flocons ont une forme d'
+                <span class="important">hexagone</span>.
             </p>
             <p>
                 Ceci est dû aux forces d'attractions et de répulsions des molécules d'eau :
@@ -113,19 +116,99 @@
         <div class="container-fluid">
             <h1 class="importantHeader">Le modèle</h1>
             <p>
-                Le modèle repose sur la<span class="important">diffusion</span> de vapeur d'eau.
+                Le modèle repose sur la
+                <span class="important">diffusion</span> de vapeur d'eau.
             </p>
             <p>
-                
+                On pave le plan de cellules hexagonales, chacune représentant une petite portion du plan.
+            </p>
+            <figure>
+                <img src="website/images/hexagrid.jpg" alt="Hexagonal grid">
+                <figcaption>
+                    Grille hexagonale pavant le plan
+                </figcaption>
+            </figure>
+            <p>
+                Chaque cellule $c$ a une position $(q,r)$ dans la grille. On note cette cellule :
+            </p>
+            <p>
+                $$c = (q,r)$$
+            </p>
+            <p>
+                A un moment $t$, chaque cellule $c$ a une
+                <span class="important">concentration</span> en molécules d'eau, que l'on note :
+            </p>
+            <p>
+                $$s(c, t) = s(q,r,t)$$
+            </p>
+            <p>
+                On représente $s(c, t)$ par un réel positif.
+            </p>
+            <p>
+                On considère qu'une cellule est
+                <span class="important">gelée</span> quand $s(c, t) ≥ 1$.
+            </p>
+            <p>
+                Finalement, on appelle :
+            </p>
+            <p>
+                Cellule
+                <span class="important">réceptive</span> : une cellule glacée, ou ayant une voisine glacée
+            </p>
+            <h2>Le laplacien</h2>
+            <p>
+                L'opérateur laplacien noté $∇²$ est la dérivée seconde d'une fonction à deux (ou plus) variables.
+            </p>
+            <p>
+                Par exemple :
+            </p>
+            <p>
+                $$s(q,r) = q² + r³$$
+            </p>
+            <p>
+                $∇²s = (∂²s)/(∂q²) + (∂²s)/(∂r²) = 2 + 6r$
+            </p>
+            <h2>Règles du modèle</h2>
+            <p>
+                On initialise toutes les cellules à une concentration initiale
+                <span class="important">β</span>, sauf la centrale que l'on met à 1.
+            </p>
+            <p>
+                A l'instant $t$ :
+            </p>
+            <p>
+                On duplique la grille en 2 :
+            </p>
+            <h3>La première grille (cellules réceptives)</h3>
+            <p>
+                Dans la première grille, on remplace toutes les cellules
+                <span class="important">non</span> réceptives par 0.
+            </p>
+            <p>
+                Pour chaque cellule
+                <span class="important">réceptives</span> dans la première grille, on ajoute une concentration
+                <span class="important">γ</span>.
+            </p>
+            <h3>La deuxième grille (cellules non réceptives)</h3>
+            <p>
+                Dans la deuxième, on remplace toutes les cellules réceptives par 0.
+            </p>
+            <p>
+                Chaque cellule $(q,r)$ de la deuxième grille suit l'équation de diffusion :
+            </p>
+            <p>
+                $$(∂s(q,r,t)))/∂t = ∇²s = (∂²s)/(∂q²) + (∂²s)/(∂r²)$$
+            </p>
+            <p>
+                On peut approximer cette variation de la concentration d'eau de $(q,r)$ :
+            </p>
+            <p>
+                <span class="important">$s(c,t+1) = 1/2s(c,t) + 1/12∑_{c'∈V(c)}s(c',t)$</span>
+            </p>
+            <p>
+                Où $V(c)$ désigne les cellules voisines de c.
             </p>
 
-
-            <p>
-                On pave le plan de cellules hexagonales. Chaque cellule représente une petite portion du plan.
-            </p>
-            <p>
-                $$∂c/∂t = D∇²c$$
-            </p>
         </div>
     </section>
 

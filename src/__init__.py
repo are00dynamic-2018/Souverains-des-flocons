@@ -4,7 +4,7 @@ import controller as co
 
 
 
-mapRad = 30
+mapRad = 25
 beta = 0.4
 gamma = 0.0001
 

@@ -157,7 +157,7 @@ class Window:
     def _ResetGrid(self):
         beta = self.sliders["beta"].get()
         gamma = self.sliders["gamma"].get()
-        self.controller = Controller(alpha, beta, gamma, self.mapRadius)
+        self.controller = Controller(beta, gamma, self.mapRadius)
 
         self.controller.ResetGrid()
         self._Display()
@@ -199,7 +199,7 @@ class Window:
             center = self.layout.HexToPixel(cell)
             text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
             self.canvas.create_text(center.x, center.y, text=text, fill="white")
-        """      
+        """    
         
 
         self.canvas.create_polygon(coords, fill=color)

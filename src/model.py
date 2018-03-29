@@ -54,7 +54,7 @@ class Model():
                 cell.state += self.gamma
 
         for cell in nonRec.cells.values():
-            cell.state = 1/2 * cell.state + 1/2 * self._GetNeighborsAverage(cell, nonRec)
+            cell.state = 1/2 * cell.state + 1/12 * self._GetNeighborsAverage(cell, nonRec)
 
 
         for qr in self.hexaMap.cells:
@@ -90,4 +90,4 @@ class Model():
                 somme += cell.oldState
                 cpt += 1
 
-        return somme/cpt
+        return somme
