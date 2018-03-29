@@ -1,6 +1,67 @@
+@font-face
+{
+    font-family: justtellmewhat;
+    src: url("../fonts/justtellmewhat.otf");
+}
+
+@font-face
+{
+    font-family: myriad;
+    src: url("../fonts/myriad.ttf");
+}
+
+
 body, html
 {
     width: 100%;
+    height: 100%;
+    font-family: "myriad";
+}
+
+/* xs < 768 */
+@media screen and (max-width: 767px) 
+{
+    body
+    {
+        font-size: 0.9em;
+    }
+}
+
+/* sm */
+@media screen and (min-width: 768px) 
+{
+    body 
+    {
+        font-size: 1em;
+    }
+}
+
+/* md */
+@media screen and (min-width: 992px) 
+{
+    body 
+    {
+        font-size: 1.2em;
+    }
+}
+
+/* lg */
+@media screen and (min-width: 1200px) 
+{
+    body 
+    {
+        font-size: 1.3em;
+    }
+}
+
+.navbar-brand
+{
+    font-family: "justtellmewhat";
+    font-size: 1.5em;
+}
+
+.section
+{
     height: 100%;
 }
 
