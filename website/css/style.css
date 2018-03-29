@@ -62,7 +62,28 @@ body, html
 
 .section
 {
+    min-height: 100%;
+    padding-top: 80px;
+}
+
+.title
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
+    width: 100%;
+}
+
+.title h1
+{
+    font-family: "justtellmewhat";
+    color: #fff;
+}
+
+.importantHeader
+{
+    font-family: "justtellmewhat";
 }
 
 .snow
