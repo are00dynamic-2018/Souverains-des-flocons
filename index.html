@@ -171,7 +171,7 @@
             <h2>Règles du modèle</h2>
             <p>
                 On initialise toutes les cellules à une concentration initiale
-                <span class="important">β</span>, sauf la centrale que l'on met à 1.
+                <span class="important">$β$</span>, sauf la centrale que l'on met à 1.
             </p>
             <p>
                 A l'instant $t$ :
@@ -187,7 +187,7 @@
             <p>
                 Pour chaque cellule
                 <span class="important">réceptives</span> dans la première grille, on ajoute une concentration
-                <span class="important">γ</span>.
+                <span class="important">$γ$</span>.
             </p>
             <h3>La deuxième grille (cellules non réceptives)</h3>
             <p>
@@ -213,6 +213,44 @@
                 On crée une 3ème grille où chaque cellule est la somme de celles des grilles précédentes.
             </p>
             <h3>Exemple</h3>
+            <figure>
+                <img src="website/images/gridinit.png" alt="Grille initiale">
+                <figcaption>
+                    Grille initiale,
+                    <span class="important">$β = 0.4$</span>
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/recep.png" alt="Première grille">
+                <figcaption>
+                    Grille des cellules réceptives
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/plusGamma.png" alt="Ajout de gamma">
+                <figcaption>
+                    Ajout de
+                    <span class="important">$γ = 0.001$</span>
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/nrecep.png" alt="Deuxième grille">
+                <figcaption>
+                    Grille des cellules non réceptives
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/average.png" alt="Moyenne">
+                <figcaption>
+                    Loi de diffusion
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/somme.png" alt="Somme">
+                <figcaption>
+                    Fusion des grilles
+                </figcaption>
+            </figure>
 
         </div>
     </section>

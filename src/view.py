@@ -197,9 +197,11 @@ class Window:
         else:
             self.canvas.create_polygon(coords, outline="white")
             center = self.layout.HexToPixel(cell)
-            text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
+            text = str(round(cell.state, 3))
+            if (self.controller.model._Receptive(cell)):
+                text = "0"
             self.canvas.create_text(center.x, center.y, text=text, fill="white")
-        """    
+        """
         
 
         self.canvas.create_polygon(coords, fill=color)
