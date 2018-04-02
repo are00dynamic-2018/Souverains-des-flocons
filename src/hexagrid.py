@@ -3,7 +3,7 @@ class HexaCell:
         "state", "oldState",
         "isEdge")
         
-    def __init__(self, q, r, state = 0, edge=False):
+    def __init__(self, q, r, state=0, edge=False):
         self.q = q
         self.r = r
         self.s = -q - r
@@ -27,7 +27,7 @@ class HexaCell:
             yield self.q + q, self.r + r
 
     def __eq__(self, other):
-        return self.q == other.q and self.r == other.r and self.s == other.s
+        return type(self) == type(other) and self.q == other.q and self.r == other.r and self.s == other.s
 
     def __add__(self, other):
         return HexaCell(self.q + other.q, self.r + other.r)
@@ -59,10 +59,9 @@ class HexaMap:
 
     def _ValidateCoords(self, qr):
         q,r = qr
-        if - self.radius <= q <= self.radius:
-            r1 = max(-self.radius, - q - self.radius)
-            r2 = min(self.radius, - q + self.radius)
-            if r1 <= r <= r2:
+        radius = self.radius
+        if -radius <= q <= radius:
+            if max(-radius, -q - radius) <= r <= min(radius, -q + radius):
                 return True
         return False
 
@@ -78,6 +77,24 @@ class HexaMap:
             self.cells[qr] = value
         else:
             raise LookupError
+
+    def __iter__(self):
+        """for data in grid:"""
+        for qr in self.keys():
+            yield self[qr]
+            
+    def keys(self):
+        """itere sur les coordonnées des cellules"""
+        already_done = set()
+        for q in range(-self.radius, self.radius + 1):
+            r1 = max(-self.radius, - q - self.radius)
+            r2 = min(self.radius, - q + self.radius)
+            for r in range(r1, r2 + 1):
+                already_done.add((q,r))
+                yield (q,r)
+    
+    def values(self):
+        return self.__iter__()
 
     def GetNeighbors(self, hexaCell):
         for qr in hexaCell.GetFalseNeighbors():
@@ -100,8 +117,7 @@ class HexaMap:
             r1 = max(-self.radius, - q - self.radius)
             r2 = min(self.radius, - q + self.radius)
             for r in range(r1, r2 + 1):
-                cell = HexaCell(q,r)
-                self.cells[(q,r)] = cell
+                self.cells[(q,r)] = HexaCell(q,r)
 
         for cell in self.cells.values():
             cell.isEdge = self.NeighborsCount(cell) != 6

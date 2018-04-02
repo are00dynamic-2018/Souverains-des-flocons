@@ -1,5 +1,33 @@
 from hexagrid import *
 import time
+from multiprocessing import Pool
+
+def updateWorker(qr, gamma, hm, rec, nonRec):
+    cell = hm[qr]
+    recCell = rec[qr]
+    nonRecCell = nonRec[qr]
+    
+    receptive = False
+    if cell.oldState >= 1 :
+        receptive = True
+    else:
+        for c in hm.GetNeighbors(cell):
+                if c.oldState >= 1:
+                    receptive = True
+    
+    if receptive:
+        recCell.state = cell.state
+        nonRecCell.state = 0
+            
+    else :
+        recCell.state = 0
+        nonRecCell.state = cell.state
+        
+    recCell.UpdateState()
+    nonRecCell.UpdateState()
+
+    if recCell.state != 0:
+            recCell.state += gamma
 
 class Model():
     def __init__(self, alpha, beta, gamma, mapRadius):
@@ -25,13 +53,13 @@ class Model():
         self.step = 0
 
     def InitGrid(self):
-        for cell in self.hexaMap.cells.values():
+        for cell in self.hexaMap:
             q,r,s = cell.GetCoords()
             if q == r and r == 0:
                 cell.SetState(1)
             else :
                 cell.SetState(self.beta)
-        self._CellsNewState()
+            cell.UpdateState()
 
     def UpdateGrid(self):
         old = time.time()
@@ -39,47 +67,49 @@ class Model():
 
         rec = HexaMap(self.hexaMap.radius)
         nonRec = HexaMap(self.hexaMap.radius)
+        
+        my_queue = []
+        for qr in self.hexaMap.keys():
+            my_queue.append([qr, self.gamma, self.hexaMap, rec, nonRec])
+        
+        with Pool(processes=4) as pp: 
+            #pp.starmap(updateWorker, my_queue)
+            for qr in self.hexaMap.keys():
+                cell = self.hexaMap[qr]
+                recCell = rec[qr]
+                nonRecCell = nonRec[qr]
+                receptive = self._Receptive(qr)
+                 
+                if receptive:
+                    recCell.state = cell.state
+                    nonRecCell.state = 0
+                         
+                else :
+                    recCell.state = 0
+                    nonRecCell.state = cell.state
+                     
+                recCell.UpdateState()
+                nonRecCell.UpdateState()
+     
+                if recCell.state != 0:
+                        recCell.state += self.gamma
 
-        for cell in self.hexaMap.cells.values():
-            q,r,s = cell.GetCoords()
-            receptive = self._Receptive(cell)
-            #print(cell, receptive)
-            if receptive:
-                rec[(q,r)] = HexaCell(cell.q, cell.r, cell.state, cell.isEdge)
-                nonRec[(q,r)] = HexaCell(cell.q, cell.r, 0, cell.isEdge)
-            else :
-                rec[(q,r)] = HexaCell(cell.q, cell.r, 0, cell.isEdge)
-                nonRec[(q,r)] = HexaCell(cell.q, cell.r, cell.state, cell.isEdge)
 
-        for cell in rec.cells.values():
-            if cell.state != 0:
-                cell.state += self.gamma
-
-        for cell in nonRec.cells.values():
-            cell.state = 1/2 * cell.state + 1/2 * self._GetNeighborsAverage(cell, nonRec)
-
-
-        for qr in self.hexaMap.cells:
-            recCell = rec[qr]
+        for qr in self.hexaMap.keys():
+            cell = self.hexaMap[qr]
             nonRecCell = nonRec[qr]
-            q,r = qr
-            cell = HexaCell(q,r, nonRecCell.state + recCell.state, recCell.isEdge)
-            self.hexaMap.cells[qr] = cell
+            cell.UpdateState()
+            cell.state = nonRecCell.state/2 + self._GetNeighborsAverage(nonRecCell, nonRec)/2 + rec[qr].state
             
         print(self.step, ":", time.time() - old, "s")
-        self._CellsNewState()
 
-    def _CellsNewState(self):
-        for cell in self.hexaMap.cells.values():
-            cell.UpdateState()
 
-    def _Receptive(self, hexaCell):
-        q,r,s = hexaCell.GetCoords()
-        hexaCell = self.hexaMap[q,r]
-        if hexaCell.oldState >= 1 :
+    def _Receptive(self, qr):
+        hc = self.hexaMap[qr]
+        if hc.oldState >= 1 :
             return True
         
-        for cell in self.hexaMap.GetNeighbors(hexaCell):
+        for cell in self.hexaMap.GetNeighbors(hc):
                 if cell.oldState >= 1:
                     return True
 
