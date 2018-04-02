@@ -58,18 +58,23 @@ class HexaMap:
         self._InitMap()
 
     def _ValidateCoords(self, qr):
+        """fontion très chère permettant de savoir si une cellule est dans
+        la grille"""
+        
         q,r = qr
         radius = self.radius
-        if -radius <= q <= radius:
-            if max(-radius, -q - radius) <= r <= min(radius, -q + radius):
-                return True
-        return False
+        return -radius <= q <= radius and max(-radius, -q - radius) <= r <= min(radius, -q + radius)
 
     def __getitem__(self, qr):
-        if self._ValidateCoords(qr):
+#c'était trop lent!!
+#         if self._ValidateCoords(qr):
+#             return self.cells[qr]
+#         else:
+#             raise LookupError
+        try:
             return self.cells[qr]
-        else:
-            raise LookupError
+        except KeyError as E:
+            raise E
 
     def __setitem__(self, qr, value):
         if self._ValidateCoords(qr):
@@ -81,7 +86,7 @@ class HexaMap:
     def __iter__(self):
         """for data in grid:"""
         for qr in self.keys():
-            yield self[qr]
+            yield self.cells[qr]
             
     def keys(self):
         """itere sur les coordonnées des cellules"""
@@ -96,28 +101,23 @@ class HexaMap:
     def values(self):
         return self.__iter__()
 
-    def GetNeighbors(self, hexaCell):
-        for qr in hexaCell.GetFalseNeighbors():
-            if self._ValidateCoords(qr):
-                yield self[qr]
+    def GetNeighbors(self, hc):
+        for qr in hc.GetFalseNeighbors():
+            try:
+                yield self.cells[qr]
+            except KeyError:
+                continue
 
-    def GetAllNeighbors(self, hexaCell):
-        neighbors = []
-        for qr in hexaCell.GetFalseNeighbors():
-            if self._ValidateCoords(qr):
-                neighbors.append(self[qr])
-        return neighbors
+    def GetAllNeighbors(self, hc):
+        return [cell for cell in self.GetNeighbors(hc)]
 
     def NeighborsCount(self, hexaCell):
         return len(self.GetAllNeighbors(hexaCell))
 
 
     def _InitMap(self):
-        for q in range(-self.radius, self.radius + 1):
-            r1 = max(-self.radius, - q - self.radius)
-            r2 = min(self.radius, - q + self.radius)
-            for r in range(r1, r2 + 1):
-                self.cells[(q,r)] = HexaCell(q,r)
+        for qr in self.keys():
+            self.cells[qr] = HexaCell(*qr)
 
         for cell in self.cells.values():
             cell.isEdge = self.NeighborsCount(cell) != 6

@@ -94,7 +94,6 @@ class Window:
         self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
 
         self.display_thr = None
-        self.grid_reset = True
         self.redraw = True
         self._DisplayLoop()
         self._InitUI()
@@ -159,6 +158,7 @@ class Window:
         gamma.grid(row=4, column=0)
         steps.grid(row=5, column=0)
         
+        self.window.bind("<Return>", lambda event: self._NextStep())
         
         self.window.mainloop()
 
@@ -170,7 +170,6 @@ class Window:
             gamma = self.sliders["gamma"].get()
             self.controller = Controller(alpha, beta, gamma, self.mapRadius)
             self.controller.ResetGrid()
-            self.grid_reset = True
             self.redraw = True
 
     @activebutton("auto")
@@ -180,7 +179,8 @@ class Window:
             for i in range(steps):
                 self._NextStep(auto=True)
                 self.ns_thr.join()
-
+    
+    @activebutton("nextStep")
     def _NextStep(self, auto=False):
         assert self.controller, "La grille n'est pas initialisée : appuyer sur Reset"
         
@@ -193,12 +193,15 @@ class Window:
                 
                 self.ns_thr = th.Thread(target=threaded_step)
                 self.ns_thr.start()
+                if not auto:
+                    self.ns_thr.join()
 
     def _DisplayLoop(self):
         def threaded_DisplayLoop():
             print("display loop thread started")
             self.redraw = True
             started = False
+            draw_counter = 0
             while True:
                 if self.redraw:
                     if not started:
@@ -206,20 +209,27 @@ class Window:
                             self.canvas
                             started = True
                         except AttributeError:
-                            sleep(0.5)
+                            sleep(0)
                             continue
                     
                     if not self.task_running.locked():
                         with self.task_running:
-                            hexa_values = tuple(self.controller.model.hexaMap)
+                            cm = self.controller.model
+                            hexa_values = tuple(cm.hexaMap)
+                            step = cm.step
+                        
+                        #empeche les fuites de mémoire liée au grand nombre d'éléments
+                        if step == 0 or draw_counter > 5:
+                            self.canvas.delete("all")
+                            draw_counter = 0;
                             
                         for cell in hexa_values:
-                            if cell.state != cell.oldState or self.grid_reset:
+                            if cell.state != cell.oldState or draw_counter == 0:
                                 self._DrawHexa(cell)
-                        self.grid_reset = False
-                        
+                                
                     self.canvas.update()
                     self.redraw = False
+                    draw_counter += 1
                     print("hex drawn!")
                 sleep(0)
         
@@ -245,6 +255,7 @@ class Window:
         """
         
         self.canvas.create_polygon(coords, fill=color)
+        
 
     def _LerpColor(self, t):
         r,g,b = (66, 134, 244)
