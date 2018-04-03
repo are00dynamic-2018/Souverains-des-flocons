@@ -1,10 +1,13 @@
 import view as v
 import controller as co
   
+
+#additional modules needed: WCK
+
 PROFILE_MODE = False
   
 if __name__ == '__main__':  
-    mapRad = 30
+    mapRad = 41
     alpha = 1
     beta = 0.3
     gamma = 0.01

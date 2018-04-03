@@ -25,6 +25,11 @@ class HexaCell:
         offsets = [(1,0), (1,-1), (0,-1), (-1,0), (-1,1), (0,1)]
         for q, r in offsets:
             yield self.q + q, self.r + r
+            
+    def copy(self):
+        c = HexaCell(self.q, self.r, self.state, self.isEdge)
+        c.oldState = self.oldState
+        return c
 
     def __eq__(self, other):
         return type(self) == type(other) and self.q == other.q and self.r == other.r and self.s == other.s
@@ -83,6 +88,9 @@ class HexaMap:
         else:
             raise LookupError
 
+    def __len__(self):
+        return len(self.cells)
+
     def __iter__(self):
         """for data in grid:"""
         for qr in self.keys():
@@ -100,6 +108,11 @@ class HexaMap:
     
     def values(self):
         return self.__iter__()
+
+    def copy(self):
+        hm = type(self)(self.radius)
+        hm.cells = {k : self.cells[k].copy() for k in self.cells.keys()}
+        return hm
 
     def GetNeighbors(self, hc):
         for qr in hc.GetFalseNeighbors():

@@ -1,7 +1,7 @@
-from hexagrid import *
-from model import *
+from model import Model
 
 PROFILE_MODE = False
+NUM_PROCS = 1 #1 and 6 are good
 
 class Controller:
     def __init__(self, alpha, beta, gamma, mapRadius):
@@ -13,7 +13,7 @@ class Controller:
         self.model.InitGrid()
     
     def NextStep(self):
-        if PROFILE_MODE:
+        if PROFILE_MODE and not NUM_PROCS > 1:
             import cProfile, pstats, io
             pr = cProfile.Profile()
             pr.enable()
@@ -23,9 +23,9 @@ class Controller:
             pr.disable()
             s = io.StringIO()
             sortby = 'tottime'
-            pstats.Stats(pr, stream=s).sort_stats(sortby).print_stats()
+            pstats.Stats(pr, stream=s).sort_stats(sortby).print_stats(20)
             sortby = 'cumtime'
-            pstats.Stats(pr, stream=s).sort_stats(sortby).print_stats(15)
+            pstats.Stats(pr, stream=s).sort_stats(sortby).print_stats(20)
             
             print(s.getvalue())
         else:

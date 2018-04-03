@@ -1,9 +1,9 @@
 import threading as th
 from time import sleep
-from controller import *
 from tkinter import *
 from math import sqrt, pi, cos, sin
 
+DEBUG_VALS = False
 
 class Point:
     def __init__(self, x, y):
@@ -77,10 +77,9 @@ class Layout:
 class Window:
     
     def __init__(self, c):
-        assert type(c) is Controller, "{} n'est pas un controller".format(type(c))
         self.task_running = th.Lock()
         self.ns_thr = None
-        self.ns_ui = None
+        self.ns_auto = None
         
         self.controller = c
         self.mapRadius = self.controller.model.hexaMap.radius
@@ -92,10 +91,12 @@ class Window:
         hexaWidth = size/self.controller.nbCellsWidth
         hexaRadius = hexaWidth/2
         self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
-
+        
         self.display_thr = None
+        self.canvas_cells = dict()
         self.redraw = True
         self._DisplayLoop()
+        
         self._InitUI()
         
     def lockbutton(mybutton):
@@ -138,10 +139,16 @@ class Window:
         
         alpha = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Alpha')
         beta = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Beta')
-        gamma = Scale(self.window, orient='horizontal', from_=0, to=0.05, resolution=0.00001, tickinterval=2, length=self.canvasWidth, label='Gamma')
+        gamma = Scale(self.window, orient='horizontal', from_=0, to=0.05, resolution=-1, tickinterval=2, length=self.canvasWidth, label='Gamma')
 
-        steps = Scale(self.window, orient="horizontal", from_=1, to=2000, resolution=1, tickinterval=2, length=self.canvasWidth, label='Steps forward')
-
+        steps = Scale(self.window, orient="horizontal", from_=1, to=2000, resolution=1, tickinterval=200, length=self.canvasWidth, label='Steps forward')
+        
+        cm = self.controller.model
+        alpha.set(cm.alpha)
+        beta.set(cm.beta)
+        gamma.set(cm.gamma)
+        steps.set(100)
+        
         self.sliders = dict(alpha=alpha, beta=beta, gamma=gamma, steps=steps)
         
         # Positionnement
@@ -172,20 +179,29 @@ class Window:
             self.controller.ResetGrid()
             self.redraw = True
 
-    @activebutton("auto")
     def _Autoplay(self):
         if not self.task_running.locked():
             steps = self.sliders["steps"].get()
-            for i in range(steps):
-                self._NextStep(auto=True)
-                self.ns_thr.join()
+            if not self.ns_auto or not self.ns_auto.is_alive():
+                
+                def threaded_auto():
+                    self.buttons["auto"].config(state=ACTIVE)
+                    for i in range(steps):
+                        self._NextStep(auto=True)
+                        self.ns_thr.join()
+                        sleep(0.01)
+                    self.redraw = True
+                    self.buttons["auto"].config(state=NORMAL)
+                
+                self.ns_auto = th.Thread(target=threaded_auto)
+                self.ns_auto.start()
     
-    @activebutton("nextStep")
     def _NextStep(self, auto=False):
         assert self.controller, "La grille n'est pas initialisée : appuyer sur Reset"
         
         if auto or not self.task_running.locked():
             if not self.ns_thr or not self.ns_thr.is_alive():
+
                 def threaded_step():
                     with self.task_running:
                         self.controller.NextStep()
@@ -201,7 +217,7 @@ class Window:
             print("display loop thread started")
             self.redraw = True
             started = False
-            draw_counter = 0
+            hexa_values = ()
             while True:
                 if self.redraw:
                     if not started:
@@ -213,23 +229,21 @@ class Window:
                             continue
                     
                     if not self.task_running.locked():
-                        with self.task_running:
-                            cm = self.controller.model
-                            hexa_values = tuple(cm.hexaMap)
-                            step = cm.step
-                        
-                        #empeche les fuites de mémoire liée au grand nombre d'éléments
-                        if step == 0 or draw_counter > 5:
+                        #with self.task_running:
+                        cm = self.controller.model
+                        hexa_values = tuple(cm.hexaMap)
+                        step = cm.step
+                    
+                        #empeche les fuites de mémoire liées au grand nombre d'éléments
+                        if step == 0:
                             self.canvas.delete("all")
-                            draw_counter = 0;
                             
                         for cell in hexa_values:
-                            if cell.state != cell.oldState or draw_counter == 0:
+                            if cell.state != cell.oldState or step == 0:
                                 self._DrawHexa(cell)
                                 
-                    self.canvas.update()
-                    self.redraw = False
-                    draw_counter += 1
+                        self.canvas.update()
+                        self.redraw = False
                     print("hex drawn!")
                 sleep(0)
         
@@ -238,23 +252,26 @@ class Window:
     
     def _DrawHexa(self, cell):
         coords = self.layout.Corners(cell)
-        coords = list(map(lambda x : (x.x, x.y), coords))
+        coords = tuple(map(lambda x : (x.x, x.y), coords))
 
         state = min(1, cell.state)
         color = self._LerpColor(state)
 
         #print(color)
-        """
-        if cell.isEdge:
-            self.canvas.create_polygon(coords, fill="white")
+        if DEBUG_VALS:
+            if cell.isEdge:
+                self.canvas.create_polygon(coords, fill="white")
+            else:
+                self.canvas.create_polygon(coords, outline="white")
+                center = self.layout.HexToPixel(cell)
+                text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
+                self.canvas.create_text(center.x, center.y, text=text, fill="white")
         else:
-            self.canvas.create_polygon(coords, outline="white")
-            center = self.layout.HexToPixel(cell)
-            text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
-            self.canvas.create_text(center.x, center.y, text=text, fill="white")
-        """
-        
-        self.canvas.create_polygon(coords, fill=color)
+            #dessin rapide car pas de nouvelles instances
+            try:
+                self.canvas.itemconfig(self.canvas_cells[coords], fill=color)
+            except KeyError:
+                self.canvas_cells[coords] = self.canvas.create_polygon(coords, fill=color)
         
 
     def _LerpColor(self, t):
