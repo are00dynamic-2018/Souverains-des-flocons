@@ -3,28 +3,11 @@ import time
 import multiprocessing as mp
 
 
-def putcellWorker(cells, hm):
-    task = 1
-    for c in hm.values():
-        cells.put( (task, c) )
-    cells.join()
-    
-    task = 2
-    hm_keys = tuple(hm.keys())
-    for qr in hm_keys:
-        cells.put( (task, qr) )
-    cells.join()
-    
-    task = -1
-    from controller import NUM_PROCS
-    for i in range(NUM_PROCS):
-        cells.put( (task, 0) )
-    cells.join()
-    print("worker "+(mp.current_process()).name+" has ended its tasks")
-
-
 def Worker(cells, hm, rec, nonRec, gamma):
     name = (mp.current_process()).name
+    
+    local_rec = dict()
+    local_nonRec = dict()
     
     def updatetask(log):
         if log:
@@ -64,8 +47,8 @@ def Worker(cells, hm, rec, nonRec, gamma):
                     recCell.state += gamma
                     
                 qr = (cell.q, cell.r)
-                rec[qr] = recCell
-                nonRec[qr] = nonRecCell
+                local_rec[qr] = recCell
+                local_nonRec[qr] = nonRecCell
                 
                 
                 
@@ -241,15 +224,6 @@ class Model():
                 cell = self.hexaMap[qr]
                 nonRecCell = nonRec[qr]
                 cell.UpdateState()
-                cell.state = nonRecCell.state/2 + self._GetNeighborsAverage(nonRecCell, nonRec)/2 + rec[qr].state
-            
+                cell.state = nonRecCell.state/2 + sum([c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 + rec[qr].state
+                
         print(self.step, ":", time.time() - old, "s")
-
-    def _GetNeighborsAverage(self, hexaCell, hexMap):
-        somme = 0
-        cpt = 0
-        for cell in hexMap.GetNeighbors(hexaCell):
-                somme += cell.oldState
-                cpt += 1
-
-        return somme/cpt

@@ -175,8 +175,7 @@ class Window:
             alpha = self.sliders["alpha"].get()
             beta = self.sliders["beta"].get()
             gamma = self.sliders["gamma"].get()
-            self.controller = Controller(alpha, beta, gamma, self.mapRadius)
-            self.controller.ResetGrid()
+            self.controller.ResetGrid(alpha, beta, gamma, self.mapRadius)
             self.redraw = True
 
     def _Autoplay(self):
@@ -197,8 +196,6 @@ class Window:
                 self.ns_auto.start()
     
     def _NextStep(self, auto=False):
-        assert self.controller, "La grille n'est pas initialisée : appuyer sur Reset"
-        
         if auto or not self.task_running.locked():
             if not self.ns_thr or not self.ns_thr.is_alive():
 
@@ -237,6 +234,7 @@ class Window:
                         #empeche les fuites de mémoire liées au grand nombre d'éléments
                         if step == 0:
                             self.canvas.delete("all")
+                            self.canvas_cells.clear()
                             
                         for cell in hexa_values:
                             if cell.state != cell.oldState or step == 0:

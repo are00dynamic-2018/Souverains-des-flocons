@@ -5,11 +5,11 @@ NUM_PROCS = 1 #1 and 6 are good
 
 class Controller:
     def __init__(self, alpha, beta, gamma, mapRadius):
+        self.ResetGrid(alpha, beta, gamma, mapRadius)
+        
+    def ResetGrid(self, alpha, beta, gamma, mapRadius):
         self.model = Model(alpha, beta, gamma, mapRadius)
         self.nbCellsWidth = self.model.hexaMap.nbCellsWidth
-        self.ResetGrid()
-        
-    def ResetGrid(self):
         self.model.InitGrid()
     
     def NextStep(self):
