@@ -6,14 +6,13 @@ class HexaCell:
     def __init__(self, q, r, state=0, edge=False):
         self.q = q
         self.r = r
-        self.s = -q - r
         self.state = state
         self.oldState = state
 
         self.isEdge = edge
 
     def GetCoords(self):
-        return self.q, self.r, self.s
+        return self.q, self.r
     
     def SetState(self, state):
         self.state = state
@@ -22,7 +21,7 @@ class HexaCell:
         self.oldState = self.state
 
     def GetFalseNeighbors(self):
-        offsets = [(1,0), (1,-1), (0,-1), (-1,0), (-1,1), (0,1)]
+        offsets = [(1,0), (0,-1), (-1,0), (0,1)]
         for q, r in offsets:
             yield self.q + q, self.r + r
             
@@ -32,7 +31,7 @@ class HexaCell:
         return c
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.q == other.q and self.r == other.r and self.s == other.s
+        return type(self) == type(other) and self.q == other.q and self.r == other.r
 
     def __add__(self, other):
         return HexaCell(self.q + other.q, self.r + other.r)
@@ -68,7 +67,7 @@ class HexaMap:
         
         q,r = qr
         radius = self.radius
-        return -radius <= q <= radius and max(-radius, -q - radius) <= r <= min(radius, -q + radius)
+        return -radius <= q <= radius and -radius <= r <= radius
 
     def __getitem__(self, qr):
 #c'était trop lent!!
@@ -100,9 +99,7 @@ class HexaMap:
         """itere sur les coordonnées des cellules"""
         already_done = set()
         for q in range(-self.radius, self.radius + 1):
-            r1 = max(-self.radius, - q - self.radius)
-            r2 = min(self.radius, - q + self.radius)
-            for r in range(r1, r2 + 1):
+            for r in range(-self.radius, self.radius + 1):
                 already_done.add((q,r))
                 yield (q,r)
     
@@ -133,4 +130,4 @@ class HexaMap:
             self.cells[qr] = HexaCell(*qr)
 
         for cell in self.cells.values():
-            cell.isEdge = self.NeighborsCount(cell) != 6
+            cell.isEdge = self.NeighborsCount(cell) != 4

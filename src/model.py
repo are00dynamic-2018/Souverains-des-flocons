@@ -128,7 +128,7 @@ class Model():
 
     def InitGrid(self):
         for cell in self.hexaMap:
-            q,r,s = cell.GetCoords()
+            q,r = cell.GetCoords()
             if q == r and r == 0:
                 cell.SetState(1)
             else :
@@ -236,7 +236,7 @@ class Model():
                 cell.state = (
                     self.alpha*nonRecCell.state/2 + 
                     self.alpha*sum(
-                    [c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 +
+                    [c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/8 +
                     rec[qr].state)
                 
 

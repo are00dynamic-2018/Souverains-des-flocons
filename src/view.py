@@ -16,63 +16,48 @@ class Point:
     def __str__(self):
         return "({},{})".format(self.x, self.y)
 
-class Orientation:
-    def __init__(self, mat, startAngle):
-        """
-        (float, float, float, float), float
-        mat : Rotation Matrix
-        startAngle : angle in degrees, for the corners
-        """
-        self.f0, self.f1, self.f2, self.f3 = mat
-        self.startAngle = startAngle
 
-    def FlatOrientation():
-        return Orientation((3 / 2, 0, sqrt(3) / 2, sqrt(3)), 0)
-
-    def PointyOrientation():
-        return Orientation((sqrt(3), sqrt(3) / 2, 0, 3/2), 30)
 
 class Layout:
-    def __init__(self, orientation, origin, cellRadius):
+    def __init__(self,  origin, cellRadius):
         """
-        Orientation, Point, int
+         Point, int
         """
         self.cellRadius = cellRadius
-        self.orientation = orientation
         self.origin = origin
 
     def HexToPixel(self, hexaCell):
         """
         HexaCell -> Center Point On Screen
         """
-        o = self.orientation
-        x = (o.f0 * hexaCell.q + o.f1 * hexaCell.r) * self.cellRadius
-        y = (o.f2 * hexaCell.q + o.f3 * hexaCell.r) * self.cellRadius
+        
+        x = hexaCell.q  * self.cellRadius
+        y = hexaCell.r * self.cellRadius
         return Point(x + self.origin.x, y + self.origin.y)
 
     def _CornerOffset(self, corner):
         """
-        int : the ith corner, must be an integer between 0 and 5
+        int : the ith corner, must be an integer between 0 and 3
         """
         corner = int(corner)
-        assert 0 <= corner and corner < 6, "Corner's number muste between 0 and 5"
+        assert 0 <= corner and corner < 4, "Corner's number muste between 0 and 3"
 
-        angle = pi/3 * (corner + self.orientation.startAngle * 1/60)
+        angle = pi/4 * (1 + 2 * corner)
         return Point(self.cellRadius * cos(angle) , self.cellRadius * sin(angle))
 
     def Corners(self, hexaCell):
         center = self.HexToPixel(hexaCell)
         corners = []
-        for i in range(0, 6):
+        for i in range(0, 4):
             offset = self._CornerOffset(i)
             corners.append(Point(int(center.x + offset.x), int(center.y + offset.y)))
         return corners
 
     def FlatLayout(origin, cellRadius):
-        return Layout(Orientation.FlatOrientation(), origin, cellRadius)
+        return Layout(origin, cellRadius)
 
     def PointyLayout(origin, cellRadius):
-        return Layout(Orientation.PointyOrientation(), origin, cellRadius)
+        return Layout(origin, cellRadius)
 
 class Window:
     
@@ -91,7 +76,7 @@ class Window:
 
         hexaWidth = size/self.controller.nbCellsWidth
         hexaRadius = hexaWidth/2
-        self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
+        self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius * 2)
         
         self.display_thr = None
         self.canvas_cells = dict()
