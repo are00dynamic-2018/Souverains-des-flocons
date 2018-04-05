@@ -3,7 +3,7 @@ import time
 import multiprocessing as mp
 
 
-def Worker(cells, hm, rec, nonRec, gamma):
+def Worker(cells, hm, rec, nonRec, alpha, gamma):
     name = (mp.current_process()).name
     
     local_rec = dict()
@@ -58,15 +58,13 @@ def Worker(cells, hm, rec, nonRec, gamma):
                 nonRecCell = nonRec[qr]
                 cell = hm[qr]
                 somme = 0
-                cpt = 0
                 for qr2 in nonRecCell.GetFalseNeighbors():
                     try:
                         somme += nonRecCell.oldState
-                        cpt += 1
                     except KeyError:
                         continue
                 cell.UpdateState()
-                cell.state = nonRecCell.state/2 + somme/(cpt*2) + rec[qr].state
+                cell.state = alpha*nonRecCell.state/2 + alpha*somme/12 + rec[qr].state
                 hm[qr] = cell
                 
             elif task == -1:
@@ -157,12 +155,14 @@ class Model():
                 
                 my_procs = []
                 for i in range(NUM_PROCS):
-                    p = mp.Process(target=Worker, args=(cells, hm, rec, nonRec, self.gamma), name="receptive"+str(i))
+                    p = mp.Process(target=Worker, args=(cells, hm, rec, nonRec, self.alpha, self.gamma), name="receptive"+str(i))
                     p.start()
                     my_procs.append(p)
                     
                 task = 1#calc receptive
                 for c in local_hm.values():
+                    if cell.isEdge:
+                        continue
                     cells.put( (task, c) )
                 cells.join()
                 
@@ -171,6 +171,8 @@ class Model():
                 
                 task = 2#calc final sums
                 for qr in tuple(local_hm.keys()):
+                    if cell.isEdge:
+                        continue
                     cells.put( (task, qr) )
                 cells.join()
                 
@@ -192,6 +194,10 @@ class Model():
             
             for qr in self.hexaMap.keys():
                 cell = self.hexaMap[qr]
+                
+                if cell.isEdge:
+                    continue
+                
                 recCell = rec[qr]
                 nonRecCell = nonRec[qr]
                   
@@ -222,8 +228,16 @@ class Model():
 
             for qr in self.hexaMap.keys():
                 cell = self.hexaMap[qr]
+                
+                if cell.isEdge:
+                    continue
+                
                 nonRecCell = nonRec[qr]
                 cell.UpdateState()
-                cell.state = nonRecCell.state/2 + sum([c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 + rec[qr].state
+                cell.state = (
+                    self.alpha*nonRecCell.state/2 + 
+                    self.alpha*sum(
+                    [c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 +
+                    rec[qr].state)
                 
         print(self.step, ":", time.time() - old, "s")
