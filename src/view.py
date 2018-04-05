@@ -79,10 +79,11 @@ class Window:
     def __init__(self, c):
         self.task_running = th.Lock()
         self.ns_thr = None
+        
         self.ns_auto = None
+        self.auto_has_to_stop = False
         
         self.controller = c
-        self.mapRadius = self.controller.model.hexaMap.radius
 
         size = 500
         self.canvasWidth = size
@@ -99,75 +100,107 @@ class Window:
         
         self._InitUI()
         
-    def lockbutton(mybutton):
-        def wrap(f):
-            def new_f(*args, **kwargs):
-                args[0].buttons[mybutton].config(state=DISABLED)
-                ret = f(*args, **kwargs)
-                args[0].buttons[mybutton].config(state=NORMAL)
-            new_f.__name__ = f.__name__
-            return new_f
-        return wrap
-    
-    def activebutton(mybutton):
-        def wrap(f):
-            def new_f(*args, **kwargs):
-                args[0].buttons[mybutton].config(state=ACTIVE)
-                ret = f(*args, **kwargs)
-                args[0].buttons[mybutton].config(state=NORMAL)
-            new_f.__name__ = f.__name__
-            return new_f
-        return wrap
-        
     def _InitUI(self):
         self.window = Tk()
+        self.window.resizable(False, False)
         self.canvas = Canvas(self.window, width=self.canvasWidth, height=self.canvasHeight, bg="black")
         self.window.title('Les souverains des flocons')
 
-        btn1 = Button(self.window, text="Next Step", command=self._NextStep)
-        btn2 = Button(self.window, text="Reset", command=self._ResetGrid)
-        btn3 = Button(self.window, text="Auto", command=self._Autoplay)
+        #top level menu
+        top = self.window.winfo_toplevel()
+        self.menuBar = Menu(top)
+        top['menu'] = self.menuBar
+    
+        self.subMenu = Menu(self.menuBar)
+        self.menuBar.add_cascade(label='Export', menu=self.subMenu)
+        self.subMenu.add_command(label='.PNG', command=self._ExportImg)
 
-        self.buttons = dict(nextStep=btn1, reset=btn2, auto=btn3)
+        #création widgets
+        controls = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Controls', relief=RIDGE)
+        btn1 = Button(controls, text="Next Step [Enter key]", command=self._NextStep)
+        
+        radius_box = Frame(controls)
+        btn2 = Button(radius_box, text="Reset", command=self._ResetGrid)
+        radius_lbl = Label(radius_box, text='Radius: ')
+        radius = Spinbox(radius_box, from_=3, to=400, increment =1, exportselection=True, width=5, command=self._needReset)
+        
+        step_box = Frame(controls)
+        btn3 = Button(step_box, text="Auto", command=self._Autoplay)
+        steps_lbl = Label(step_box, text='Steps forward: ')
+        steps = Spinbox(step_box, from_=1, to=2000, increment =1, exportselection=True, width=5)
+        
 
-        
-        
-        text = StringVar()
-        text.set("t = 0")
 
-        self.timeLabel= Label(self.window, textvariable=text)
-        
-        alpha = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Alpha')
-        beta = Scale(self.window, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, length=self.canvasWidth, label='Beta')
-        gamma = Scale(self.window, orient='horizontal', from_=0, to=0.05, resolution=-1, tickinterval=2, length=self.canvasWidth, label='Gamma')
+        mdl = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Controls', relief=RIDGE)
 
-        steps = Scale(self.window, orient="horizontal", from_=1, to=2000, resolution=1, tickinterval=200, length=self.canvasWidth, label='Steps forward')
+        alpha = Scale(mdl, orient='horizontal', from_=0, to=3, resolution=0.1, tickinterval=2, label='Alpha', command=self._needReset)
+        beta = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, label='Beta', command=self._needReset)
+        gamma = Scale(mdl, orient='horizontal', from_=0, to=0.05, resolution=-1, tickinterval=2, label='Gamma', command=self._needReset)
         
+        #init values:
         cm = self.controller.model
         alpha.set(cm.alpha)
         beta.set(cm.beta)
         gamma.set(cm.gamma)
-        steps.set(100)
+        steps.delete(0,"end")
+        steps.insert(0,100)
+        radius.delete(0,"end")
+        radius.insert(0,cm.hexaMap.radius)
         
-        self.sliders = dict(alpha=alpha, beta=beta, gamma=gamma, steps=steps)
+        #register widgets:
+        self.buttons = dict(
+            nextStep=btn1, 
+            reset=btn2, 
+            auto=btn3)
+        self.sliders = dict(
+            alpha=alpha, 
+            beta=beta, 
+            gamma=gamma, 
+            steps=steps, 
+            radius=radius)
         
         # Positionnement
-
-        self.canvas.grid(row=0, column=0, columnspan=3)
+        #dans la fenetre
+        self.canvas.pack(fill=X)
+        controls.pack(fill=X)
+        mdl.pack(fill=X)
         
-        btn1.grid(row=1, column=0)
-        btn2.grid(row=1, column=1)
-        btn3.grid(row=1, column=2)
+        #dans controls
+        btn1.grid(row=0, column=0, sticky=N+W+S+E)
+        radius_box.grid(row=0, column=1)
+        step_box.grid(row=0, column=2)
+        
+        #dans radius_box
+        btn2.grid(row=0, column=0, sticky=E, columnspan=2)
+        radius_lbl.grid(row=1, column=0)
+        radius.grid(row=1, column=1)
+        
+        #dans step_box
+        btn3.grid(row=0, column=0, sticky=E, columnspan=2)
+        steps_lbl.grid(row=1, column=0)
+        steps.grid(row=1, column=1)
+        
+        #dans mdl
+        alpha.pack(fill=X)
+        beta.pack(fill=X)
+        gamma.pack(fill=X)
         
         
-        alpha.grid(row=2, column=0)
-        beta.grid(row=3, column=0)
-        gamma.grid(row=4, column=0)
-        steps.grid(row=5, column=0)
-        
+        #bindings de touches
         self.window.bind("<Return>", lambda event: self._NextStep())
         
+        #démarage loop d'affichage tcl
         self.window.mainloop()
+
+    def _needReset(self, event=None):
+        cm = self.controller.model
+        if not (
+            cm.alpha == self.sliders["alpha"].get() and
+            cm.beta == self.sliders["beta"].get() and
+            cm.gamma == self.sliders["gamma"].get() and
+            cm.hexaMap.radius == int(self.sliders["radius"].get())
+            ):
+            self.buttons["reset"].config(bg="orange")
 
 
     def _ResetGrid(self):
@@ -175,22 +208,31 @@ class Window:
             alpha = self.sliders["alpha"].get()
             beta = self.sliders["beta"].get()
             gamma = self.sliders["gamma"].get()
+            self.mapRadius = int(self.sliders["radius"].get())
+            
             self.controller.ResetGrid(alpha, beta, gamma, self.mapRadius)
+            
+            self.buttons["reset"].config(bg=self.window.cget("bg"))
             self.redraw = True
 
     def _Autoplay(self):
+        if self.ns_auto and self.ns_auto.is_alive():
+            self.auto_has_to_stop = True
+            
         if not self.task_running.locked():
-            steps = self.sliders["steps"].get()
+            steps = int(self.sliders["steps"].get())
             if not self.ns_auto or not self.ns_auto.is_alive():
+                self.buttons["auto"].config(bg="yellow", text="Stop")
                 
                 def threaded_auto():
-                    self.buttons["auto"].config(state=ACTIVE)
                     for i in range(steps):
                         self._NextStep(auto=True)
                         self.ns_thr.join()
                         sleep(0.01)
+                        if self.auto_has_to_stop:
+                            self.auto_has_to_stop = False
+                            break
                     self.redraw = True
-                    self.buttons["auto"].config(state=NORMAL)
                 
                 self.ns_auto = th.Thread(target=threaded_auto)
                 self.ns_auto.start()
@@ -203,7 +245,7 @@ class Window:
                     with self.task_running:
                         self.controller.NextStep()
                     self.redraw = True
-                
+                    
                 self.ns_thr = th.Thread(target=threaded_step)
                 self.ns_thr.start()
                 if not auto:
@@ -215,8 +257,11 @@ class Window:
             self.redraw = True
             started = False
             hexa_values = ()
+            working = True
             while True:
-                if self.redraw:
+                if self.redraw or working:
+                    self.redraw = False
+                    working = True
                     if not started:
                         try:
                             self.canvas
@@ -230,7 +275,7 @@ class Window:
                         cm = self.controller.model
                         hexa_values = tuple(cm.hexaMap)
                         step = cm.step
-                    
+
                         #empeche les fuites de mémoire liées au grand nombre d'éléments
                         if step == 0:
                             self.canvas.delete("all")
@@ -240,8 +285,17 @@ class Window:
                             if cell.state != cell.oldState or step == 0:
                                 self._DrawHexa(cell)
                                 
+                        #add text for step:
+                        try:
+                            self.canvas.itemconfig(self.canvas_cells["txt"], text="t = {}".format(step))
+                        except KeyError:
+                            self.canvas_cells["txt"] = self.canvas.create_text(1, 1, anchor=NW, text="t = 0", fill="white")
+                                
                         self.canvas.update()
-                        self.redraw = False
+                        working = False
+                        
+                    if not (self.ns_auto and self.ns_auto.is_alive()):
+                        self.buttons["auto"].config(bg=self.window.cget("bg"), text="Auto")
                     print("hex drawn!")
                 sleep(0)
         
@@ -281,5 +335,8 @@ class Window:
         nB = int(b * (1-t) + B * t)
 
         return "#" + str(hex(nR).split("x")[-1]) + str(hex(nG).split("x")[-1]) + str(hex(nB).split("x")[-1])
+    
+    def _ExportImg(self):
+        pass
 
  

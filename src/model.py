@@ -113,7 +113,7 @@ class Model():
         """
         assert 0 <= beta and beta <= 1, "Le niveau de vapeur beta doit être compris entre 0 et 1"
         assert 0 <= gamma and gamma <= 1, "La constante d'addition de vapeur gamma doit être comprise entre 0 et 1"
-        assert 0 <= alpha and alpha <= 1, "La constante de diffusion alpha doit être comprise entre 0 et 1"
+        assert 0 <= alpha, "La constante de diffusion alpha doit être >0"
         assert mapRadius >= 0, "Le rayon de la carte doit être positif"
 
         self.alpha = alpha
@@ -166,8 +166,7 @@ class Model():
                     cells.put( (task, c) )
                 cells.join()
                 
-                print("len rec[]: "+str(len(rec)))
-                print("len nonRec[]: "+str(len(nonRec)))
+                print("len dicts[]: "+str(len(rec)))
                 
                 task = 2#calc final sums
                 for qr in tuple(local_hm.keys()):
