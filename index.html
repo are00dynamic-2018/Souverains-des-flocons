@@ -1,44 +1,290 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Les Souverains des flocons</title>
-        <link rel="stylesheet" href="website/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-        <!--icons-->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <!-- Personal css -->
-        <link rel="stylesheet" href="website/css/style.css">
-    </head>
-    <body>
-        <div id="page" class="container-fluid">
-            <nav class="navbar navbar-expand-md fixed-top sticky-navigation">
-                <a href="#" class="navbar-brand"><strong>SNOWFLAKES SOVEREIGNS</strong></a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Les Souverains des flocons</title>
+    <link rel="stylesheet" href="website/bootstrap/css/bootstrap.min.css">
+    <!-- Personal css -->
+    <link rel="stylesheet" href="website/css/style.css">
+    <script src="website/js/jquery.js"></script>
+    <script src="website/bootstrap/js/bootstrap.min.js"></script>
+    <script src="website/js/jqmath.js"></script>
+</head>
+
+<body class="text-center">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand scroll" href="#titleSection">Souverains des flocons</a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse-main">
+                    <span class="navbar-toggler-icon">
+                    </span>
                 </button>
-                <div id="navbarCollapse" class="collapse navbar-collapse">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#introduction">Introduction</a></li>
-                        <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#grid">Grille</a></li>
-                        <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#model">Modèle</a></li>
-                        <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#implementation">Implémentation</a></li>
-                        <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#analysis">Analyse</a></li>
-                    </ul>
-                </div>
-            </nav>
-            
-            <section class="bg-texture hero pt-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 text-white wow fadeIn">
-                            
-                        </div>
-                    </div>
-                </div>
-            </section>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navbar-collapse-main">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#intro">INTRO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#model">MODELE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#grid">GRILLE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#interpretation">INTERPRETATION</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </body>
+    </nav>
+
+
+    <section class="section" id="titleSection">
+        <div class="snow container-fluid">
+            <div class="title">
+                <h1>
+                    La formation des flocons de neige
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="intro">
+        <div class="container-fluid">
+            <h1 class="importantHeader">Introduction</h1>
+            <p>
+                Nous avons étudié la formation des flocons de neige.
+            </p>
+            <p>
+                La forme des flocons dépend en grande partie de la
+                <span class="important">température</span> et de l'
+                <span class="important">humidité</span> ambiantes.
+            </p>
+            <p>
+                Dans le plan, on peut observer, entre autres :
+            </p>
+            <ul id="snowFlakes" class="d-md-flex justify-content-around">
+                <li>
+                    <figure>
+                        <img src="website/images/stellarDendrites.jpg" alt="Stellar Dendrites">
+                        <figcaption>
+                            Les dendrites stellaires (Stellar Dendrites)
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="website/images/fernlike.jpg" alt="Fernlike snowflake">
+                        <figcaption>
+                            Les flocons en fougère (Fernlike snowflakes)
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="website/images/hexagonalPlate.jpg" alt="Hexagonal plate">
+                        <figcaption>
+                            Poussière de diamant (Diamond dust)
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+            <p>
+                On remarque les flocons ont une forme d'
+                <span class="important">hexagone</span>.
+            </p>
+            <p>
+                Ceci est dû aux forces d'attractions et de répulsions des molécules d'eau :
+            </p>
+            <figure>
+                <img src="website/images/H2O.jpg" alt="Molécules d'H2O">
+                <figcaption>
+                    Agencement hexagonal des molécules d'eau et liaisons hydrogènes
+                </figcaption>
+            </figure>
+            <p>
+                Pour simuler une telle croissance, nous avons implémenté une grille hexagonale.
+            </p>
+        </div>
+    </section>
+
+    <section class="section" id="model">
+        <div class="container-fluid">
+            <h1 class="importantHeader">Le modèle</h1>
+            <p>
+                Le modèle repose sur la
+                <span class="important">diffusion</span> de vapeur d'eau.
+            </p>
+            <p>
+                On pave le plan de cellules hexagonales, chacune représentant une petite portion du plan.
+            </p>
+            <figure>
+                <img src="website/images/hexagrid.jpg" alt="Hexagonal grid">
+                <figcaption>
+                    Grille hexagonale pavant le plan
+                </figcaption>
+            </figure>
+            <p>
+                Chaque cellule $c$ a une position $(q,r)$ dans la grille. On note cette cellule :
+            </p>
+            <p>
+                $$c = (q,r)$$
+            </p>
+            <p>
+                A un moment $t$, chaque cellule $c$ a une
+                <span class="important">concentration</span> en molécules d'eau, que l'on note :
+            </p>
+            <p>
+                $$s(c, t) = s(q,r,t)$$
+            </p>
+            <p>
+                On représente $s(c, t)$ par un réel positif.
+            </p>
+            <p>
+                On considère qu'une cellule est
+                <span class="important">gelée</span> quand $s(c, t) ≥ 1$.
+            </p>
+            <p>
+                Finalement, on appelle :
+            </p>
+            <p>
+                Cellule
+                <span class="important">réceptive</span> : une cellule glacée, ou ayant une voisine glacée
+            </p>
+            <h2>Le laplacien</h2>
+            <p>
+                L'opérateur laplacien noté $∇²$ est la dérivée seconde d'une fonction à deux (ou plus) variables.
+            </p>
+            <p>
+                Par exemple :
+            </p>
+            <p>
+                $$s(q,r) = q² + r³$$
+            </p>
+            <p>
+                $∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²} = 2 + 6r$
+            </p>
+            <h2>Règles du modèle</h2>
+            <p>
+                On initialise toutes les cellules à une concentration initiale
+                <span class="important">$β$</span>, sauf la centrale que l'on met à 1.
+            </p>
+            <p>
+                A l'instant $t$ :
+            </p>
+            <p>
+                On duplique la grille en 2 :
+            </p>
+            <h3>La première grille (cellules réceptives)</h3>
+            <p>
+                Dans la première grille, on remplace toutes les cellules
+                <span class="important">non</span> réceptives par 0.
+            </p>
+            <p>
+                Pour chaque cellule
+                <span class="important">réceptives</span> dans la première grille, on ajoute une concentration
+                <span class="important">$γ$</span>.
+            </p>
+            <h3>La deuxième grille (cellules non réceptives)</h3>
+            <p>
+                Dans la deuxième, on remplace toutes les cellules réceptives par 0.
+            </p>
+            <p>
+                Chaque cellule $(q,r)$ de la deuxième grille suit l'équation de diffusion :
+            </p>
+            <p>
+                $${∂s(q,r,t))}/∂t = ∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²}$$
+            </p>
+            <p>
+                On peut approximer cette variation de la concentration d'eau pour chaque cellule $c$ :
+            </p>
+            <p>
+                <span class="important">$s(c,t+1) = 1/2s(c,t) + 1/12∑_{c'∈V(c)}s(c',t)$</span>
+            </p>
+            <p>
+                Où $V(c)$ désigne les cellules voisines de c.
+            </p>
+            <h3>Fusion des grilles</h3>
+            <p>
+                On crée une 3ème grille où chaque cellule est la somme de celles des grilles précédentes.
+            </p>
+            <h3>Exemple</h3>
+            <figure>
+                <img src="website/images/gridinit.png" alt="Grille initiale">
+                <figcaption>
+                    Grille initiale,
+                    <span class="important">$β = 0.4$</span>
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/recep.png" alt="Première grille">
+                <figcaption>
+                    Grille des cellules réceptives
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/plusGamma.png" alt="Ajout de gamma">
+                <figcaption>
+                    Ajout de
+                    <span class="important">$γ = 0.001$</span>
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/nrecep.png" alt="Deuxième grille">
+                <figcaption>
+                    Grille des cellules non réceptives
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/average.png" alt="Moyenne">
+                <figcaption>
+                    Loi de diffusion
+                </figcaption>
+            </figure>
+            <figure>
+                <img src="website/images/somme.png" alt="Somme">
+                <figcaption>
+                    Fusion des grilles
+                </figcaption>
+            </figure>
+
+        </div>
+    </section>
+
+    <section class="section" id="grid">
+        <div class="container-fluid">
+            <h1 class="importantHeader">La grille hexagonale</h1>
+        </div>
+    </section>
+
+    <section class="section" id="interpretation">
+        <div class="container-fluid">
+            <h1 class="importantHeader">Interprétation des résultats</h1>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h1>Bibliographie</h1>
+            <h2>Articles</h2>
+            <ul>
+                <li>
+                    <a href="http://www.storyofsnow.com/media/blogs/a/March2011/Why%206%20corners%20on%20snow-%20J%20Nelson.pdf">Cristal hexagonal</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+
+    <script src="website/js/scroll.js">
+    </script>
+
+
+</body>
+
 </html>

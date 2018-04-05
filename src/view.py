@@ -2,6 +2,7 @@ import threading as th
 from time import sleep
 from tkinter import *
 from math import sqrt, pi, cos, sin
+import time as t
 
 DEBUG_VALS = False
 
@@ -88,6 +89,7 @@ class Window:
         size = 500
         self.canvasWidth = size
         self.canvasHeight = size
+        self.step = 0
 
         hexaWidth = size/self.controller.nbCellsWidth
         hexaRadius = hexaWidth/2
@@ -131,6 +133,8 @@ class Window:
         
 
 
+
+
         mdl = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Controls', relief=RIDGE)
 
         alpha = Scale(mdl, orient='horizontal', from_=-3, to=3, resolution=0.0001, tickinterval=2, label='Alpha', command=self._needReset)
@@ -158,6 +162,7 @@ class Window:
             gamma=gamma, 
             steps=steps, 
             radius=radius)
+
         
         # Positionnement
         #dans la fenetre
@@ -180,10 +185,12 @@ class Window:
         steps_lbl.grid(row=1, column=0)
         steps.grid(row=1, column=1)
         
+
         #dans mdl
         alpha.pack(fill=X)
         beta.pack(fill=X)
         gamma.pack(fill=X)
+
         
         
         #bindings de touches
@@ -220,6 +227,7 @@ class Window:
             self.redraw = True
 
     def _Autoplay(self):
+
         if self.ns_auto and self.ns_auto.is_alive():
             self.auto_has_to_stop = True
             
@@ -306,6 +314,7 @@ class Window:
         self.display_thr = th.Thread(target=threaded_DisplayLoop, daemon=True)
         self.display_thr.start()
     
+
     def _DrawHexa(self, cell):
         coords = self.layout.Corners(cell)
         coords = tuple(map(lambda x : (x.x, x.y), coords))
@@ -323,11 +332,13 @@ class Window:
                 text = str(round(cell.state, 5)) + "\n" + str(cell.q) + " " + str(cell.r)
                 self.canvas.create_text(center.x, center.y, text=text, fill="white")
         else:
+
             #dessin rapide car pas de nouvelles instances
             try:
                 self.canvas.itemconfig(self.canvas_cells[coords], fill=color)
             except KeyError:
                 self.canvas_cells[coords] = self.canvas.create_polygon(coords, fill=color)
+
         
 
     def _LerpColor(self, t):

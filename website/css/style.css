@@ -1,31 +1,154 @@
-html, body
+@font-face
+{
+    font-family: justtellmewhat;
+    src: url("../fonts/justtellmewhat.otf");
+}
+
+@font-face
+{
+    font-family: myriad;
+    src: url("../fonts/myriad.ttf");
+}
+
+
+body, html
 {
     width: 100%;
     height: 100%;
-    background: #000;
+    font-family: "myriad";
 }
 
-body
+/* xs < 768 */
+@media screen and (max-width: 767px) 
 {
-    font-size: large;
+    body
+    {
+        font-size: 0.9em;
+    }
 }
 
-.navbar
+/* sm */
+@media screen and (min-width: 768px) 
 {
-    min-height: 80px;
+    body 
+    {
+        font-size: 1em;
+    }
 }
 
-.sticky-navigation
+/* md */
+@media screen and (min-width: 992px) 
 {
-    top: -100px;
+    body 
+    {
+        font-size: 1.2em;
+    }
 }
 
-.bg-texture
+/* lg */
+@media screen and (min-width: 1200px) 
 {
-    background:-webkit-linear-gradient(-45deg, #ffb300 33%, transparent 0%),
-        linear-gradient(-45deg, #512DA8 100%, transparent 33%);
-    background:-moz-linear-gradient(-45deg, #ffb300 33%, transparent 0%),
-        linear-gradient(-45deg, #512DA8 100%, transparent 33%);
-    background:linear-gradient(-45deg, #ffb300 33%, transparent 0%),
-        linear-gradient(-45deg, #512DA8 100%, transparent 33%);
+    body 
+    {
+        font-size: 1.3em;
+    }
+}
+
+.navbar-brand
+{
+    font-family: "justtellmewhat";
+    font-size: 1.5em;
+}
+
+.section
+{
+    min-height: 100%;
+    padding-top: 80px;
+}
+
+.title
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.title h1
+{
+    font-family: "justtellmewhat";
+    color: #fff;
+}
+
+.importantHeader
+{
+    font-family: "justtellmewhat";
+}
+
+#snowFlakes
+{
+    list-style-type: none;
+}
+
+img
+{
+    max-width: 70%;
+    height: auto;
+    border-radius: 15px;
+}
+
+.important
+{
+    font-weight: bold;
+    font-size: 1.05em;
+    color: #016dff;
+    font-family: "justtellmewhat";
+}
+
+figcaption
+{
+    font-style: italic;
+}
+
+@media screen and (max-width: 992px) 
+{
+    img 
+    {
+        max-width: 50%;
+    }
+}
+
+@media screen and (min-width: 992px) 
+{
+    .snow 
+    {
+        background-image: url("https://image.ibb.co/k0aqx6/snow.png"),
+            url("https://image.ibb.co/eCahc6/snow1.png"),
+            url("https://image.ibb.co/bOboH6/snow2.png");
+        animation: snow 20s linear infinite;
+    }
+}
+
+.snow
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 1;
+    background-color: black;
+}
+
+@keyframes snow
+{
+    from
+    {
+        background-position: 0px 0px, 0px 0px, 0px 0px;
+    }
+    to
+    {
+        background-position: 500px 1000px, 200px 400px, -100px 300px;
+    }
 }

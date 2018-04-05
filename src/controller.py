@@ -4,6 +4,7 @@ PROFILE_MODE = False
 NUM_PROCS = 1 #1 and 6 are good
 
 class Controller:
+
     def __init__(self, alpha, beta, gamma, mapRadius):
         self.ResetGrid(alpha, beta, gamma, mapRadius)
         
