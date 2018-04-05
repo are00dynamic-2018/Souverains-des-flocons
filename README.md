@@ -1,6 +1,8 @@
 # Souverains des flocons
 **Nous étudions la formation des flocons de neige.**
 
+**WE ARE IN SQUARE GRID**
+
 ![Image of Devine Snowflake](https://bridoz.com/wp-content/uploads/2014/05/neige11.jpg)
 
 ###### Membres
