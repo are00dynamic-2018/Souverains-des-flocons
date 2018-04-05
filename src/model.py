@@ -239,4 +239,4 @@ class Model():
                     [c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 +
                     rec[qr].state)
                 
-)
+
