@@ -135,7 +135,7 @@ class Window:
 
         alpha = Scale(mdl, orient='horizontal', from_=0, to=3, resolution=0.1, tickinterval=2, label='Alpha', command=self._needReset)
         beta = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, label='Beta', command=self._needReset)
-        gamma = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.00001, tickinterval=2, label='Gamma', command=self._needReset)
+        gamma = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.0001, tickinterval=2, label='Gamma', command=self._needReset)
         
         #init values:
         cm = self.controller.model
