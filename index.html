@@ -175,13 +175,15 @@
             <a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\partial&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;t}=\frac{1}{12}\left(\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;q^2}&space;&plus;&space;\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;r^2}\right)" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\frac{\partial&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;t}=\frac{1}{12}\left(\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;q^2}&space;&plus;&space;\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;r^2}\right)" title="\frac{\partial c\left ( q,r,t \right )}{\partial t}=\frac{1}{12}\left(\frac{\partial^2 c\left ( q,r,t \right )}{\partial q^2} + \frac{\partial^2 c\left ( q,r,t \right )}{\partial r^2}\right)" /></a>            <p>
                     <h2>Implémentation du modèle</h2>  
             <p>
-                On fixe la pression de vapeur saturante à 1.
-                    Une cellule est
-                    <span class="important">gelée</span> quand c(q,r, t) ≥ 1.
+                Pression de vapeur saturante = 1.
+                </p>
+                <p>
+                        Cellule
+                        <span class="important">gelée</span> : quand c(q,r, t) ≥ 1.
                 </p>
             <p>
                 Cellule
-                <span class="important">réceptive</span> : une cellule ayant une voisine glacée
+                <span class="important">réceptive</span> : une cellule ayant une voisine gelée
             </p>
             <p>
                 On initialise la grille comme suit :
@@ -258,12 +260,6 @@
                             </figure>
                 </div>
             </div>
-            
-            
-            
-            
-            
-            
 
         </div>
     </section>
@@ -279,10 +275,12 @@
     <section>
         <div class="container">
             <h1>Bibliographie</h1>
-            <h2>Articles</h2>
             <ul>
                 <li>
-                    <a href="http://www.storyofsnow.com/media/blogs/a/March2011/Why%206%20corners%20on%20snow-%20J%20Nelson.pdf">Cristal hexagonal</a>
+                    <a href="http://www.meteofrance.fr/prevoir-le-temps/phenomenes-meteo/la-neige-et-ses-transformations">Formation de flocons</a>
+                </li>
+                <li>
+                    <a href="https://patarnott.com/pdf/SnowCrystalGrowth.pdf">Modèle de Reiter</a>
                 </li>
             </ul>
         </div>
@@ -292,6 +290,11 @@
 
     <script src="website/js/scroll.js">
     </script>
+    <script>
+            $('.navbar-nav>li>a').on('click', function(){
+    $('.navbar-collapse').collapse('hide');
+});
+        </script>
 
 
 </body>
