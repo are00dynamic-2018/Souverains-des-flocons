@@ -134,3 +134,4 @@ class HexaMap:
 
         for cell in self.cells.values():
             cell.isEdge = self.NeighborsCount(cell) != 6
+       
