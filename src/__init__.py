@@ -10,7 +10,7 @@ PROFILE_MODE = False
 if __name__ == '__main__':  
     mapRad = 41
     alpha = 1
-    beta = random.uniform(0, 0.95)
+    beta = round(random.uniform(0, 0.95), 2)
     gamma = random.uniform(0, 1)
     
     c = co.Controller(alpha, beta, gamma, mapRad)
