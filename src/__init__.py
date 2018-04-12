@@ -1,5 +1,6 @@
 import view as v
 import controller as co
+import random
   
 
 #additional modules needed: WCK
@@ -9,8 +10,8 @@ PROFILE_MODE = False
 if __name__ == '__main__':  
     mapRad = 41
     alpha = 1
-    beta = 0.3
-    gamma = 0.01
+    beta = random.uniform(0, 0.95)
+    gamma = random.uniform(0, 1)
     
     c = co.Controller(alpha, beta, gamma, mapRad)
     
