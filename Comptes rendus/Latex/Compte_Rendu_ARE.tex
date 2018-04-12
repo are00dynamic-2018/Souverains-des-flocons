@@ -1,0 +1,208 @@
+%packages et classe definis ici
+\documentclass[a4paper,12pt,twoside]{report}
+\renewcommand{\contentsname}{Sommaire}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+\usepackage{stmaryrd}
+\usepackage{enumitem}
+%definition des types de numerotation
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\alph{subsection})}
+
+%definition d'un environnement qui permet de faire des tabulations
+\newenvironment{adjustwidth}[2]{
+ \begin{list}{}{
+  \setlength{\topsep}{0em}
+  \setlength{\itemsep}{0em}
+  \setlength{\parsep}{\parskip}
+  \setlength{\labelsep}{0em}
+  \setlength{\leftmargin}{#1}
+  \setlength{\rightmargin}{#2}
+  \setlength{\listparindent}{\parindent}
+  \setlength{\labelwidth}{0em}
+  \setlength{\itemindent}{\parindent}%
+ }
+ \item
+}{\end{list}}
+\newenvironment{indented}[1][1.5cm]{\begin{adjustwidth}{#1}{0cm}}{\end{adjustwidth}}
+
+
+%debut du rapport
+\begin{document}
+
+\title{\LARGE {\bf Un modèle de formation des cristaux de neige}\\
+ \vspace*{6mm}
+}
+
+\author{Melissa Mansour, Julian Merle, Nicolas Ruche, Océane Trazie}
+\date{Université Pierre et Marie Curie\\ \vspace*{4cm} ARE Dynamic 2017-2018}
+
+
+\maketitle
+%resume
+\chapter*{Résumé}Au cours de ce semestre, notre ambition a été de réussir à modéliser mathématiquement puis informatiquement des flocons de neiges. Nous nous sommes imposé une modélisation assez réaliste et proche du modèle physique afin de réussir à simuler la formation de flocons de différentes formes observables dans la nature.
+
+nous avons conçu un automate cellulaire sous forme de grille où à chaque cellule est attribué un niveau de vapeur. La mise à jour du modèle se base sur l’équation de diffusion, bien connue des physiciens.
+\medbreak
+Le modèle que nous avons choisi est celui de Reiter, le plus connu et le plus utilisé pour la modélisation de flocons car il permet d’obtenir des résultats suffisamment fidèles à la réalité.
+
+
+%quote page
+\newpage
+\begin{flushright}
+\begin{indented}[4cm]
+\emph{"Si éclairant soient les grands textes, ils donnent moins de lumière que les premiers flocons de neige."} - Christian Bobin, écrivain et poète français.
+\end{indented}
+\end{flushright}
+
+%sommaire et texte
+\tableofcontents
+\chapter*{Introduction}Les flocons de  neige sont formés de petits cristaux de glace (entre 0.2 et 2 mm de diamètre) qui se forment au sein des nuages. En effet, trois conditions essentielles doivent être réunies pour permettre la formation d’un flocon : la présence de vapeur d'eau, une température plus basse que 0\degre C et la présence de minuscules poussières.\\
+C’est au contact de ces dernières que la vapeur d’eau ambiante se condense, et si la température est suffisamment basse, prend la forme d’un microscopique germe de glace (de l’ordre de 10 $\mu m$) qui croît grâce à l’effet Bergeron jusqu’à donner naissance au flocon.
+
+Une de nos problématiques majeures a été de trouver le support d’affichage adéquat pour les flocons que nous modéliserons. Nous nous sommes rendu compte qu’utiliser une grille hexagonale simplifierait bien largement les calculs et permettrait une meilleure représentation des flocons qu’avec une matrice carrée fut la première option nous venant à l’idée.
+
+Notre équipe se compose de Melissa Mansour, Julian Merle-Remond, Nicolas Ruche et Océane Trazie.
+\medbreak
+Nous allons donc commencer par présenter le modèle de Reiter sur lequel nous avons basé notre travail. Nous verrons ensuite les différentes contributions de l’équipe à c projet et finiront par exposer les principales observations comportementales du modèle que nous avons pu faire.
+
+\chapter{Présentation du modèle}Le flocon de neige se forme au sein des nuages par condensation de vapeur sur une micro-poussière naturellement présente dans l’atmosphère. On observe dans la nature trois grandes formes de flocons représentables en 2 dimensions : les plaquettes, les dendrites étoilées et les dendrites à rayons (voir schéma [...].
+
+Le modèle repose sur trois phénomènes physiques importants  : la pression de vapeur saturante, l’effet Bergeron et l’équation de diffusion.
+ 
+\section{Modèle physique}
+\subsection{Pression de vapeur saturante}Dans notre cas, le germe s’apparente à un corps pur (composé uniquement d’eau).
+\medbreak
+La pression de vapeur saturante est la pression de la phase gazeuse de l’eau lorsqu’elle est en équilibre thermodynamique avec la phase solide de l’eau. Si la pression partielle (pression qui serait exercée par les molécules d’eau elles occupaient seules tout le volume offert) dépasse la pression de vapeur saturante, l’eau condense pour devenir solide.
+
+Ainsi, auprès d’un point gelé, si suffisamment d’eau s’accumule autour de celui-ci, la pression partielle dépasse la pression de vapeur saturante, et la vapeur se solidifie sur ce point.
+\subsection{Effet Bergeron}Dans un milieu condensé où coexistent à température négative des cristaux de glace et des gouttelettes d'eau en état de surfusion, ces dernières se vaporisent, puis se condensent à l'état solide au contact des cristaux, du fait que la pression de vapeur saturante de la vapeur d'eau est moins élevée par rapport à la glace que par rapport à l'eau liquide (\emph{météofrance.fr}).
+
+Ceci nous indique qu’auprès d’un cristal de glace, la vapeur a plus tendance à se condenser.
+\subsection{Équation de diffusion}Les changements de concentration en vapeur d’eau suivent l’équation de diffusion :
+$$\frac{\partial c\left ( x,y,t \right )}{\partial t}=\frac{1}{12}\left(\frac{\partial^2 c\left ( x,y,t \right )}{\partial x^2} + \frac{\partial^2 c\left ( x,y,t \right )}{\partial y^2}\right)$$
+
+Avec $c\left ( x,y,t \right )$, la concentration de vapeur au point $\left(x,y\right)$ à l’instant $t$.
+La constante $\frac{1}{12}$ est la constante de diffusion, on choisit ce nombre pour des simplifications qui vont s’opérer.
+Cela veut dire que plus l’écart entre la concentration en vapeur d’un point, et celle de ses voisins, est grand, plus celui-ci aura tendance à être comblé pour atteindre un équilibre(voir le schéma [1]).
+
+\section{Modèle mathématique}
+\subsection{Discrétisation de l’équation de diffusion}Chaque cellule hexagonale possède une concentration $c$ en vapeur d’eau. L’équation :
+
+$$\frac{\partial c\left ( q,r,t \right )}{\partial t}=\frac{1}{12}\left(\frac{\partial^2 c\left ( q,r,t \right )}{\partial q^2} + \frac{\partial^2 c\left ( q,r,t \right )}{\partial r^2}\right)(4)$$
+
+
+peut se discrétiser comme suit, d’après la méthode des différences finies:
+
+\begin{align}
+	 &\frac{ c\left ( q,r,t+1 \right ) - c\left ( q,r,t \right )}{t+1-t}= \frac{1}{12}(c(q+1,r,t) + c(q-1,r,t) + c(q,r+1,t)+ c(q,r-1,t)+ c(q-1,r+1,t) \\
+      &+ c(q+1,r-1,t) - 6\times c(q,r,t)) (5) 
+\end{align}
+\bigbreak
+On pose :
+$$V(c) = c(q+1,r,t) + c(q-1,r,t) + c(q,r+1,t)+ c(q,r-1,t)+ c(q-1,r+1,t)+ c(q+1,r-1,t)  (6)$$
+\bigbreak
+(5) devient après simplification :
+$$ c\left ( q,r,t+1 \right ) = \frac{1}{2}c\left ( q,r,t \right ) + \frac{1}{12}V(c) (6)$$
+
+\subsection{Le modèle de Reiter}La concentration en vapeur d’eau est représentée par un nombre réel positif, qu’on appelle état.
+On initialise une grille hexagonale, dont chaque état vaut une constante $\beta$ (comprise entre 0 et 1), sauf la cellule centrale, représentant le germe, que l’on met à 1.\\
+On considère qu’une cellule est gelée si son état est 1 ou plus. On dit qu’une cellule est réceptive si elle a au moins une cellule voisine gelée.
+\medbreak
+On considère qu’une cellule est gelée si son état vaut 1 ou plus (la pression a dépassé la pression de vapeur saturante). On dit qu’une cellule est réceptive si elle a au moins une cellule voisine gelée. On impose aux cellules se trouvant au bord de rester à la valeur de $\beta$ afin que la valeur de la vapeur environnante est continuellement un impact sur la formation du flocon.
+\medbreak
+Pour simuler la diffusion de la vapeur : On applique l’équation (6) sur chacune des cellules (en prenant garde de ne pas les mettre à jour une par une mais toutes en même temps !), en comptant l’état des cellules réceptives égal à 0.
+\medbreak
+ D’après l’effet Bergeron, l’état des cellules réceptives doit augmenter, car celles-ci sont près d’un site glacé. Ainsi on ajoute une constante dite d’addition $\gamma$ aux cellules qui étaient réceptives avant d’appliquer l’équation de diffusion. Cette constante d’addition simule l’échange de matière entre les cellules dont la frontière est bien évidemment imaginaire et ne sert qu’à la discrétisation du plan.
+
+\chapter{Contributions}Pour notre programme, nous avons choisi d’utiliser un motif d'architecture logicielle destiné aux interfaces graphiques lancé en 1978 et très populaire pour les applications web : le Model-View-Controller. Notre programme est donc composé de 3 modules ayant chacun un rôle bien précis : le modèle, qui contient les données à afficher; la vue, qui correspond à l’interface graphique visible par l'utilisateur et le contrôleur, qui traite les données de l'utilisateur, il dépend et interagit avec le modèle ainsi que la vue.
+
+Aussi, nous avons comme précisé précédemment utilisé une méthode de grille hexagonale que nous avons nommé HexaGrid dans notre code et qui sera présentée plus en détail dans les parties qui suivent.
+
+\section{Grille hexagonale}
+\subsection{Module numpy}Numpy est un module python permettant de calculer rapidement des résultats mathématiques trop lourds pour être implémentés en python pur efficacement, ce premier étant en effet écrit en C. Ce module permet en outre de gérer facilement et rapidement les matrices de nombres. 
+
+Cette propriété intéressante le rendait parfaitement adapté à notre travail: en effet, la grille hexagonale peut être décrite par coordonnées en deux dimensions se prêtant particulièrement à ce style de stockage. 
+
+Le traitement des vecteurs par l'interface \emph{numpy} aurait surement été très efficace mais la grille a été réalisée sans utiliser ce module bien que beaucoup de tests probants aient été conduits.\\En effet, par manque d'efficacité dans la mise en œuvre du le logiciel final, l'implémentation a été abandonnée en partie due à des problèmes de compatibilité et de portabilité des ressources. La programmation ayant été réalisé sur des machines Linux et Windows, la non-portabilité des codes C compilés de numpy entres systèmes et versions de python empêchaient une utilisation aisée de la librairie.
+\medbreak
+Il a donc été choisi d'optimiser le code python standard pour notre usage.
+
+\subsection{Espace vectoriel et hexagrid}La première idée consistait à paver le plan d’un maillage carré. Néanmoins, pour les flocons adoptant une forme hexagonale, les résultats n’étaient que passables et parfois difformes. (voir schéma [2]) Nous avons donc opté pour une grille hexagonale qui épouse mieux la forme naturellement hexagonale des flocons de neige qui est due aux forces d'attractions et de répulsions des molécules d'eau. (voir schéma [...])
+\medbreak
+La grille est donc construite telle qu'elle soit assimilable à un hyperplan H tel que:
+
+$$H=\left \{(x,y,z)\in\mathbb{Z}^3\mid x+y+z=0 \right \}$$
+
+Ceci est aussi dû au manque de liberté des particules (seulement 4 direction), visible sur l’image.
+Le plan est donc représenté par un maillage hexagonal.
+Pour un hexagone centré en l’origine de rayon $h$, les 6 coins ont pour coordonnées cartésiennes :
+
+$$\left \{ \left(h\times\cos\left(\frac{\pi}{6}\times i\right),h\times\sin\left(\frac{\pi}{6}\times i\right)\right), i \in \llbracket 0,1,2,3,4,5 \rrbracket \right \} (1)$$
+\medbreak
+Chaque hexagone est défini par un couple $\left (q,r \right)$. Voir l’image [3] pour comprendre le système de coordonnées.
+Pour chaque hexagone de rayon $h$, son centre en coordonnés cartésiennes est donné par :
+$$h\times\begin{pmatrix}
+\sqrt{3} & \frac{\sqrt{3}}{2}\\
+0 & \frac{3}{2}
+\end{pmatrix}\binom{q}{r}(2)$$
+
+En combinant (1) et (2), on trouve que les coins de chaque hexagone ont pour coordonnées :
+$$\left \{ \left(h\times\left(\cos\left(\frac{\pi}{6}\times i\right) + \sqrt{3}\times q + \frac{\sqrt{3}}{2}\times r\right),h\times\left(\sin\left(\frac{\pi}{6}\times i\right) + \frac{3}{2}\times r\right)\right), i \in \llbracket 0,1,2,3,4,5 \rrbracket \right \} (3)$$
+
+
+
+\section{Modèle}Cette partie du programme gère l'état des cellules de la grille. Elle a été très fortement optimisée tout au long de la phase de finalisation du programme.
+
+Pour pouvoir représenter les flocons, nous avons discrétisé le plan (voir méthode hexagrid), ainsi le temps. Ce dernier est représenté par un entier naturel \emph{t} qui est incrémenté de 1 à chaque nouvelle itération. 
+
+De plus, pendant cette phase, nous avons réussi à diviser le temps d'exécution par unité de temps par environ 6.5 (temps qui diffère selon les configurations).\\Le gain de temps s'explique par la forte diminution du nombre de boucles itérant sur l'ensemble des cellules (seules 2 des 5 initiales furent conservées) et l'optimisation des boucles restantes en limitant les appels de fonctions.
+
+\section{Vue et Contrôleur}Pour réaliser la vue, nous avons utilisé le module de gestion de fenêtres \emph{tkinter},  intégré à la bibliothèque standard de Python.
+
+Ce dernier nous a permis d’avoir une interface graphique offrant une passerelle entre Python et la bibliothèque \emph{Tk}. L’avantage du canvas que nous avons créé est qu’il nous permet de dessiner notre flocon au pixel près, en définissant la résolution de l’affichage.
+\medbreak
+Afin d'optimiser ce processus, la bibliothèque \emph{threading} a été utilisée afin de permettre l'exécution de tâches de fond tout en gardant l'interface graphique en interaction avec l'utilisateur. Les fonctions implémentées en exécution parallèle à l'aide de ce module sont par exemple le dessin des cellules en continu à l'écran, le calcul de l'étape temporelle suivante et la progression automatique.
+
+Cette gestion permet l'implémentation de fonctionnalités liant le calcul et l'interface comme un bouton d'arrêt pour de la tâche en cours (bouton auto/stop de la progression automatique).
+
+\chapter{Interprétation des résultats}Nous rappelons que $0\le\beta\le0.95$ correspond au niveau de vapeur environnant et $0\le\gamma\le1$ à la constante d’addition d’eau.\\Nous avons généré nos flocons sur une grille hexagonal d’environ 60$\times$60 cellules.\\Le nombre d’itérations avant d’obtenir le résultat final dépend des configurations, certaines convergeant plus rapidement vers leur état final.\\La partie claire correspond aux cellules dont la valeur est supérieure à 1 (soit à l’eau solide) et la partie plus foncée correspond aux cellules dont la valeur est inférieure à 1, avec le bleu correspond à un niveau 0 (eau liquide).
+\medbreak
+\begin{itemize}[label=\textbullet]
+	\item \underline{$\beta=\gamma=0:$} Aucune formation n’apparaît. Ceci s’explique par 		le fait qu’il n’y ait ni humidité ni échange de matière d’une cellule à une autre : 		les conditions pour la formation d’un flocon ne sont pas réunies donc l’eau reste à 		l’état liquide et seule la cellule du milieu reste glacée.
+	\medbreak
+	\item \underline{$\beta=0, \gamma>0:$} On obtient alors des plaquettes dont le 				diamètre augmente lorsque $\gamma$ augmente. La croissance elle, est très lente à 			cause du fait que la vapeur provient uniquement de la condensation du germe, le niveau 	d'humidité étant trop faible pour que d'autres sites de glace se forment 					indépendamment.
+	\medbreak
+	\item \underline{$\beta>0, \gamma$ très grand :}
+	\medbreak
+		\begin{itemize}[label=$\square$]
+		\item \underline{$\gamma=1:$} On obtient uniquement des plaquettes (hexagones 				réguliers). Pour un même nombre d’itérations, le diamètre de plaquette est plus 			petit si la valeur de $\beta$ est plus petite et inversement si la valeur de 
+		$\beta$ est plus importante.\\Cependant, le diamètre à l’état final est maximum,
+		et donc le même peu importe la valeur de $\beta$. 
+		\item \underline{$\gamma<1:$} On obtient d’abord des plaquettes pour un $\beta$
+		élevé, puis plus il diminue, plus le flocon tend plus vers une forme dendritique
+		étoilée.
+		\end{itemize}
+	\item \underline{$\beta, \gamma$ très petits:} La formation du flocon est lente et
+	minutieuse, les flocons obtenus sont alors essentiellement des dendrites à rayons.
+	\item \underline{$\gamma>0, \beta$ très grand:} On obtient alors des formes abstraites
+	de dendrites étoilées qui varient assez aléatoirement en fonction des valeurs de 
+	$\beta$ et $\gamma$.\\Du fait que le niveau vapeur environnante soit très élevé, la
+	croissance est plutôt rapide.\\avec cette configuration, on obtient un nombre 				impressionnant de formes dendritiques différentes ce qui nous apparaît comme
+	remarquablement réaliste.
+\end{itemize}
+
+\chapter{Conclusion}
+pour conclure
+\chapter*{Abstract}During this semester, our ambition was to succeed in mathematically and computationally modelize snow crystal growth. We imposed ourselves to use a fairly realistic model in order to approach the physical model and successfully simulate the formation of different snowflakes shapes that can be observed in nature.
+\medbreak
+Therefore, we designed a cellular automaton in the form of a hexagonal grid where a vapor level is assigned to each cell. The update of the model is based on the well known by physicists diffusion equation.
+\medbreak
+The model we chose is the popular Reiter’s model, using a combined approach of mathematical analysis and numerical simulation. Indeed our work combined to this model allowed us to obtain results that we judged sufficiently faithful to reality.
+
+
+\end{document}

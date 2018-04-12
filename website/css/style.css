@@ -18,6 +18,11 @@ body, html
     font-family: "myriad";
 }
 
+.img-center
+{
+    align-items: center;
+}
+
 /* xs < 768 */
 @media screen and (max-width: 767px) 
 {

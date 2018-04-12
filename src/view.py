@@ -133,8 +133,8 @@ class Window:
 
         mdl = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Modèle', relief=RIDGE)
 
-        alpha = Scale(mdl, orient='horizontal', from_=-3, to=3, resolution=0.0001, tickinterval=2, label='Alpha', command=self._needReset)
-        beta = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.0001, tickinterval=2, label='Beta', command=self._needReset)
+        alpha = Scale(mdl, orient='horizontal', from_=0, to=3, resolution=0.1, tickinterval=2, label='Alpha', command=self._needReset)
+        beta = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, label='Beta', command=self._needReset)
         gamma = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.0001, tickinterval=2, label='Gamma', command=self._needReset)
         
         #init values:
@@ -291,9 +291,9 @@ class Window:
                                 
                         #add text for step:
                         try:
-                            self.canvas.itemconfig(self.canvas_cells["txt"], text="t = {}".format(step))
+                            self.canvas.itemconfig(self.canvas_cells["txt"], text="t = {}\nbeta = {}\ngamma = {}".format(step, cm.beta, cm.gamma))
                         except KeyError:
-                            self.canvas_cells["txt"] = self.canvas.create_text(10, 5, anchor=NW, text="t = 0", fill="white")
+                            self.canvas_cells["txt"] = self.canvas.create_text(1, 1, anchor=NW, text="t = 0\nbeta = {}\ngamma = {}".format(cm.beta, cm.gamma), fill="white")
                                 
                         self.canvas.update()
                         working = False

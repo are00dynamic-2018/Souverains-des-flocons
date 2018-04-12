@@ -29,13 +29,16 @@
                         <a class="nav-link scroll" href="#intro">INTRO</a>
                     </li>
                     <li class="nav-item">
+                            <a class="nav-link scroll" href="#grid">GRILLE</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link scroll" href="#model">MODELE</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#grid">GRILLE</a>
+                        <a class="nav-link scroll" href="#interpretation">INTERPRETATION</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#interpretation">INTERPRETATION</a>
+                        <a class="nav-link scroll" href="#conclusion">CONCLUSION</a>
                     </li>
                 </ul>
             </div>
@@ -54,226 +57,324 @@
     </section>
 
     <section class="section" id="intro">
-        <div class="container-fluid">
-            <h1 class="importantHeader">Introduction</h1>
+            <div class="container-fluid">
+                <h1 class="importantHeader">Introduction</h1>
+                <p>
+                    Nous avons étudié la formation des flocons de neige.
+                </p>
+                <ul>
+                        <li>
+                            La pression de vapeur saturante
+                        </li>
+                        <li>
+                            L'effet Bergeron
+                        </li>
+                    </ul>
+                    <h2>La pression de vapeur saturante</h2>
             <p>
-                Nous avons étudié la formation des flocons de neige.
+                Pression à partir de laquelle la vapeur se solidifie
             </p>
+            <h2>Effet Bergeron</h2>
             <p>
-                La forme des flocons dépend en grande partie de la
-                <span class="important">température</span> et de l'
-                <span class="important">humidité</span> ambiantes.
+                De la vapeur se condense au niveau des cristaux de glace
             </p>
-            <p>
-                Dans le plan, on peut observer, entre autres :
-            </p>
-            <ul id="snowFlakes" class="d-md-flex justify-content-around">
-                <li>
-                    <figure>
-                        <img src="website/images/stellarDendrites.jpg" alt="Stellar Dendrites">
+                <p>
+                    La forme dépend de :
+                </p>
+                <ul>
+                    <li>
+                        La temperature
+                    </li>
+                    <li>
+                        La concentration en vapeur d'eau
+                    </li>
+                </ul>
+                
+                <p>
+                    Dans le plan, on peut observer, entre autres :
+                </p>
+                <ul id="snowFlakes" class="d-md-flex justify-content-around">
+                    <li>
+                        <figure>
+                            <img src="website/images/stellarDendrites.jpg" alt="Stellar Dendrites">
+                            <figcaption>
+                                Les dendrites stellaires (Stellar Dendrites)
+                            </figcaption>
+                        </figure>
+                    </li>
+                    <li>
+                        <figure>
+                            <img src="website/images/fernlike.jpg" alt="Fernlike snowflake">
+                            <figcaption>
+                                Les flocons en fougère (Fernlike snowflakes)
+                            </figcaption>
+                        </figure>
+                    </li>
+                    <li>
+                        <figure>
+                            <img src="website/images/hexagonalPlate.jpg" alt="Hexagonal plate">
+                            <figcaption>
+                                Les plaquettes (Plates)
+                            </figcaption>
+                        </figure>
+                    </li>
+                </ul>
+                <p>
+                    Les flocons ont une forme d'
+                    <span class="important">hexagone</span>.
+                </p>
+                <p>
+                    Ceci est dû aux forces d'attractions et de répulsions des molécules d'eau :
+                </p>
+                <figure>
+                    <img src="website/images/H2O.jpg" alt="Molécules d'H2O">
+                    <figcaption>
+                        Agencement hexagonal des molécules d'eau et liaisons hydrogènes
+                    </figcaption>
+                </figure>
+                <p>
+                    Pour simuler une telle croissance, nous avons implémenté une grille hexagonale.
+                </p>
+            </div>
+        </section>
+
+    <section class="section" id="grid">
+            <div class="container-fluid">
+                <h1 class="importantHeader">La grille hexagonale</h1>
+                <p>
+                    Chaque cellule a pour coordonnées un couple (q,r) :
+                </p>
+                <figure>
+                        <img src="website/images/hexagrid.png" alt="Hexagonal grid">
                         <figcaption>
-                            Les dendrites stellaires (Stellar Dendrites)
+                            Grille hexagonale pavant le plan
                         </figcaption>
                     </figure>
-                </li>
-                <li>
+                    <p>
+                        La grille hexagonale, où h est le rayon des hexagones, est définie par :
+                    </p>
+                    <a href="https://www.codecogs.com/eqnedit.php?latex=\left&space;\{&space;h\times\begin{pmatrix}&space;\sqrt{3}&space;&&space;\frac{\sqrt{3}}{2}\\&space;0&space;&&space;\frac{3}{2}&space;\end{pmatrix}\binom{q}{r},&space;\binom{q}{r}\in\mathbb{Z}^2\right&space;\}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\left&space;\{&space;h\times\begin{pmatrix}&space;\sqrt{3}&space;&&space;\frac{\sqrt{3}}{2}\\&space;0&space;&&space;\frac{3}{2}&space;\end{pmatrix}\binom{q}{r},&space;\binom{q}{r}\in\mathbb{Z}^2\right&space;\}" title="\left \{ h\times\begin{pmatrix} \sqrt{3} & \frac{\sqrt{3}}{2}\\ 0 & \frac{3}{2} \end{pmatrix}\binom{q}{r}, \binom{q}{r}\in\mathbb{Z}^2\right \}" /></a>                    <p>
+                        Les coordonnées des 6 coins d'un hexagone de rayon h et de position (q,r) sont données par :
+                    </p>
+                    <a href="https://www.codecogs.com/eqnedit.php?latex=\left&space;\{&space;\left(h\times\left(\cos\left(\frac{\pi}{6}\times&space;i\right)&space;&plus;&space;\sqrt{3}\times&space;q&space;&plus;&space;\frac{\sqrt{3}}{2}\times&space;r\right),h\times\left(\sin\left(\frac{\pi}{6}\times&space;i\right)&space;&plus;&space;\frac{3}{2}\times&space;r\right)\right),&space;i&space;\in&space;\left&space;\{&space;0,1,2,3,4,5&space;\right&space;\}&space;\right&space;\}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\left&space;\{&space;\left(h\times\left(\cos\left(\frac{\pi}{6}\times&space;i\right)&space;&plus;&space;\sqrt{3}\times&space;q&space;&plus;&space;\frac{\sqrt{3}}{2}\times&space;r\right),h\times\left(\sin\left(\frac{\pi}{6}\times&space;i\right)&space;&plus;&space;\frac{3}{2}\times&space;r\right)\right),&space;i&space;\in&space;\left&space;\{&space;0,1,2,3,4,5&space;\right&space;\}&space;\right&space;\}" title="\left \{ \left(h\times\left(\cos\left(\frac{\pi}{6}\times i\right) + \sqrt{3}\times q + \frac{\sqrt{3}}{2}\times r\right),h\times\left(\sin\left(\frac{\pi}{6}\times i\right) + \frac{3}{2}\times r\right)\right), i \in \left \{ 0,1,2,3,4,5 \right \} \right \}" /></a>
+                    </div>
                     <figure>
-                        <img src="website/images/fernlike.jpg" alt="Fernlike snowflake">
-                        <figcaption>
-                            Les flocons en fougère (Fernlike snowflakes)
-                        </figcaption>
-                    </figure>
-                </li>
-                <li>
-                    <figure>
-                        <img src="website/images/hexagonalPlate.jpg" alt="Hexagonal plate">
-                        <figcaption>
-                            Poussière de diamant (Diamond dust)
-                        </figcaption>
-                    </figure>
-                </li>
-            </ul>
-            <p>
-                On remarque les flocons ont une forme d'
-                <span class="important">hexagone</span>.
-            </p>
-            <p>
-                Ceci est dû aux forces d'attractions et de répulsions des molécules d'eau :
-            </p>
-            <figure>
-                <img src="website/images/H2O.jpg" alt="Molécules d'H2O">
-                <figcaption>
-                    Agencement hexagonal des molécules d'eau et liaisons hydrogènes
-                </figcaption>
-            </figure>
-            <p>
-                Pour simuler une telle croissance, nous avons implémenté une grille hexagonale.
-            </p>
-        </div>
-    </section>
+                            <img src="website/images/hexaangle.png" alt="Hexagonal grid">
+                            <figcaption>
+                                Grille hexagonale pavant le plan
+                            </figcaption>
+                        </figure>
+        </section>
+
+    
 
     <section class="section" id="model">
         <div class="container-fluid">
             <h1 class="importantHeader">Le modèle</h1>
             <p>
-                Le modèle repose sur la
-                <span class="important">diffusion</span> de vapeur d'eau.
+                Le modèle repose sur :
             </p>
+            <ul>
+                <li>
+                    La pression de vapeur saturante
+                </li>
+                <li>
+                    L'effet Bergeron
+                </li>
+                <li>
+                    La <span class="important">diffusion</span> de vapeur d'eau.
+                </li>
+            </ul>
+            
+            <h2>La diffusion de la vapeur d'eau</h2>
             <p>
-                On pave le plan de cellules hexagonales, chacune représentant une petite portion du plan.
+                La concentration c en vapeur d'eau à l'instant t en position (q,r) suit l'équation de diffusion :
             </p>
-            <figure>
-                <img src="website/images/hexagrid.jpg" alt="Hexagonal grid">
-                <figcaption>
-                    Grille hexagonale pavant le plan
-                </figcaption>
-            </figure>
+            
+            <a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\partial&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;t}=\frac{1}{12}\left(\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;q^2}&space;&plus;&space;\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;r^2}\right)" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\frac{\partial&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;t}=\frac{1}{12}\left(\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;q^2}&space;&plus;&space;\frac{\partial^2&space;c\left&space;(&space;q,r,t&space;\right&space;)}{\partial&space;r^2}\right)" title="\frac{\partial c\left ( q,r,t \right )}{\partial t}=\frac{1}{12}\left(\frac{\partial^2 c\left ( q,r,t \right )}{\partial q^2} + \frac{\partial^2 c\left ( q,r,t \right )}{\partial r^2}\right)" /></a>            <p>
+                    <h2>Implémentation du modèle</h2>  
             <p>
-                Chaque cellule $c$ a une position $(q,r)$ dans la grille. On note cette cellule :
-            </p>
-            <p>
-                $$c = (q,r)$$
-            </p>
-            <p>
-                A un moment $t$, chaque cellule $c$ a une
-                <span class="important">concentration</span> en molécules d'eau, que l'on note :
-            </p>
-            <p>
-                $$s(c, t) = s(q,r,t)$$
-            </p>
-            <p>
-                On représente $s(c, t)$ par un réel positif.
-            </p>
-            <p>
-                On considère qu'une cellule est
-                <span class="important">gelée</span> quand $s(c, t) ≥ 1$.
-            </p>
-            <p>
-                Finalement, on appelle :
-            </p>
+                Pression de vapeur saturante = 1.
+                </p>
+                <p>
+                        Cellule
+                        <span class="important">gelée</span> : quand c(q,r, t) ≥ 1.
+                </p>
             <p>
                 Cellule
-                <span class="important">réceptive</span> : une cellule glacée, ou ayant une voisine glacée
-            </p>
-            <h2>Le laplacien</h2>
-            <p>
-                L'opérateur laplacien noté $∇²$ est la dérivée seconde d'une fonction à deux (ou plus) variables.
+                <span class="important">réceptive</span> : une cellule ayant une voisine gelée
             </p>
             <p>
-                Par exemple :
+                On initialise la grille comme suit :
+            </p>
+            <ul>
+                <li>c(0,0,0) = 1</li>
+                <li>c(q,r,0) = <span class="important">$β$</span>, sinon</li>
+                </ul>
+            <p>
+                Approximation de l'équation de diffusion :
+            </p>
+            <a href="https://www.codecogs.com/eqnedit.php?latex=c\left&space;(&space;q,r,t&plus;1&space;\right&space;)&space;=&space;\frac{1}{2}c\left&space;(&space;q,r,t&space;\right&space;)&space;&plus;&space;\frac{1}{12}V(c)" target="_blank"><img src="https://latex.codecogs.com/svg.latex?c\left&space;(&space;q,r,t&plus;1&space;\right&space;)&space;=&space;\frac{1}{2}c\left&space;(&space;q,r,t&space;\right&space;)&space;&plus;&space;\frac{1}{12}V(c)" title="c\left ( q,r,t+1 \right ) = \frac{1}{2}c\left ( q,r,t \right ) + \frac{1}{12}V(c)" /></a>
+            <p>
+                Avec :
+            </p>
+            <a href="https://www.codecogs.com/eqnedit.php?latex=V(c)&space;=&space;c(q&plus;1,r,t)&space;&plus;&space;c(q-1,r,t)&space;&plus;&space;c(q,r&plus;1,t)&plus;&space;c(q,r-1,t)&plus;&space;c(q-1,r&plus;1,t)&plus;&space;c(q&plus;1,r-1,t)" target="_blank"><img src="https://latex.codecogs.com/svg.latex?V(c)&space;=&space;c(q&plus;1,r,t)&space;&plus;&space;c(q-1,r,t)&space;&plus;&space;c(q,r&plus;1,t)&plus;&space;c(q,r-1,t)&plus;&space;c(q-1,r&plus;1,t)&plus;&space;c(q&plus;1,r-1,t)" title="V(c) = c(q+1,r,t) + c(q-1,r,t) + c(q,r+1,t)+ c(q,r-1,t)+ c(q-1,r+1,t)+ c(q+1,r-1,t)" /></a>
+            <p>
+                On applique cette formule sur toutes les cellules, en comptant pour nul les cellules réceptives.
             </p>
             <p>
-                $$s(q,r) = q² + r³$$
+            On rajoute une concentration <span class="important">$γ$</span> à toutes les cellules qui étaient réceptives <span class="important">avant</span> diffusion.
             </p>
-            <p>
-                $∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²} = 2 + 6r$
-            </p>
-            <h2>Règles du modèle</h2>
-            <p>
-                On initialise toutes les cellules à une concentration initiale
-                <span class="important">$β$</span>, sauf la centrale que l'on met à 1.
-            </p>
-            <p>
-                A l'instant $t$ :
-            </p>
-            <p>
-                On duplique la grille en 2 :
-            </p>
-            <h3>La première grille (cellules réceptives)</h3>
-            <p>
-                Dans la première grille, on remplace toutes les cellules
-                <span class="important">non</span> réceptives par 0.
-            </p>
-            <p>
-                Pour chaque cellule
-                <span class="important">réceptives</span> dans la première grille, on ajoute une concentration
-                <span class="important">$γ$</span>.
-            </p>
-            <h3>La deuxième grille (cellules non réceptives)</h3>
-            <p>
-                Dans la deuxième, on remplace toutes les cellules réceptives par 0.
-            </p>
-            <p>
-                Chaque cellule $(q,r)$ de la deuxième grille suit l'équation de diffusion :
-            </p>
-            <p>
-                $${∂s(q,r,t))}/∂t = ∇²s = {∂²s}/{∂q²} + {∂²s}/{∂r²}$$
-            </p>
-            <p>
-                On peut approximer cette variation de la concentration d'eau pour chaque cellule $c$ :
-            </p>
-            <p>
-                <span class="important">$s(c,t+1) = 1/2s(c,t) + 1/12∑_{c'∈V(c)}s(c',t)$</span>
-            </p>
-            <p>
-                Où $V(c)$ désigne les cellules voisines de c.
-            </p>
-            <h3>Fusion des grilles</h3>
-            <p>
-                On crée une 3ème grille où chaque cellule est la somme de celles des grilles précédentes.
-            </p>
+
             <h3>Exemple</h3>
-            <figure>
-                <img src="website/images/gridinit.png" alt="Grille initiale">
-                <figcaption>
-                    Grille initiale,
-                    <span class="important">$β = 0.4$</span>
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="website/images/recep.png" alt="Première grille">
-                <figcaption>
-                    Grille des cellules réceptives
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="website/images/plusGamma.png" alt="Ajout de gamma">
-                <figcaption>
-                    Ajout de
-                    <span class="important">$γ = 0.001$</span>
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="website/images/nrecep.png" alt="Deuxième grille">
-                <figcaption>
-                    Grille des cellules non réceptives
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="website/images/average.png" alt="Moyenne">
-                <figcaption>
-                    Loi de diffusion
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="website/images/somme.png" alt="Somme">
-                <figcaption>
-                    Fusion des grilles
-                </figcaption>
-            </figure>
+            <div class="row">
+                <div class="col-md-12">
+                        <figure>
+                                <img src="website/images/gridinit.png" alt="Grille initiale">
+                                <figcaption>
+                                    Grille initiale,
+                                    <span class="important">$β = 0.4$</span>
+                                </figcaption>
+                            </figure>
+                </div>
+                <div class="col-md-6">
+                        <figure>
+                                <img src="website/images/recep.png" alt="Première grille">
+                                <figcaption>
+                                    Grille des cellules réceptives
+                                </figcaption>
+                            </figure>
+                </div>
+                <div class="col-md-6">
+                        <figure>
+                                <img src="website/images/nrecep.png" alt="Deuxième grille">
+                                <figcaption>
+                                    Grille des cellules non réceptives
+                                </figcaption>
+                            </figure>
+                </div>
+                <div class="col-md-6">
+                        <figure>
+                                <img src="website/images/plusGamma.png" alt="Ajout de gamma">
+                                <figcaption>
+                                    Ajout de
+                                    <span class="important">$γ = 0.001$</span>
+                                </figcaption>
+                            </figure>
+                </div>
+                <div class="col-md-6">
+                        <figure>
+                                <img src="website/images/average.png" alt="Moyenne">
+                                <figcaption>
+                                    Loi de diffusion
+                                </figcaption>
+                            </figure>
+                </div>
+                <div class="col-md-12">
+                        <figure>
+                                <img src="website/images/somme.png" alt="Somme">
+                                <figcaption>
+                                    Grille à jour
+                                </figcaption>
+                            </figure>
+                </div>
+            </div>
 
         </div>
     </section>
 
-    <section class="section" id="grid">
-        <div class="container-fluid">
-            <h1 class="importantHeader">La grille hexagonale</h1>
-        </div>
-    </section>
+    
 
     <section class="section" id="interpretation">
         <div class="container-fluid">
             <h1 class="importantHeader">Interprétation des résultats</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0_3g0_0035.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.3$ ,$γ = 0.0035$
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0_3g1.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.3$ ,$γ = 1.0$
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0_4g0_001.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.4$ ,$γ = 0.001$
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0g0.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.0$ ,$γ = 0.0$
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0_9g0_035.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.9$ ,$γ = 0.035$
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="col-md-4">
+                    <figure>
+                        <img src="Comptes%20rendus/Latex/b0_3g0_0001.png" alt="Image de flocon générée">
+                        <figcaption>
+                            $β = 0.3$ ,$γ = 0.0001$
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
         </div>
+    </section>
+    
+    <section class="section" id="conclusion">
+        <div class="container">
+            <h1 class="importantHeader">Conclusion</h1>
+            <p>
+                Limites du modèle
+            </p>
+            <p>
+                Ouverture à la 3ème dimension
+            </p>
+            <div class="row">
+                <div class="col-md-6 d-flex img-center">
+                        <img class="img-fluid" src="https://i.vimeocdn.com/video/465368181.jpg">
+
+                </div>
+                <div class="col-md-6">
+                        <img class="img-fluid" src="http://www.laboiteverte.fr/wp-content/uploads/2009/12/flocon-neige.jpg">
+
+                    </div>
+            </div>
+        </div>
+        
     </section>
 
     <section>
         <div class="container">
             <h1>Bibliographie</h1>
-            <h2>Articles</h2>
             <ul>
                 <li>
-                    <a href="http://www.storyofsnow.com/media/blogs/a/March2011/Why%206%20corners%20on%20snow-%20J%20Nelson.pdf">Cristal hexagonal</a>
+                    <a href="http://www.meteofrance.fr/prevoir-le-temps/phenomenes-meteo/la-neige-et-ses-transformations">Formation de flocons</a>
+                </li>
+                <li>
+                    <a href="https://patarnott.com/pdf/SnowCrystalGrowth.pdf">Modèle de Reiter</a>
                 </li>
             </ul>
         </div>
@@ -283,6 +384,11 @@
 
     <script src="website/js/scroll.js">
     </script>
+    <script>
+            $('.navbar-nav>li>a').on('click', function(){
+    $('.navbar-collapse').collapse('hide');
+});
+        </script>
 
 
 </body>
