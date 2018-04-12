@@ -113,7 +113,7 @@ class Window:
     
         self.subMenu = Menu(self.menuBar)
         self.menuBar.add_cascade(label='Export', menu=self.subMenu)
-        self.subMenu.add_command(label='.PNG', command=self._ExportImg)
+        self.subMenu.add_command(label='PostScript illisible', command=self._ExportImg)
 
         #création widgets
         controls = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Controls', relief=RIDGE)
@@ -131,7 +131,7 @@ class Window:
         
 
 
-        mdl = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Controls', relief=RIDGE)
+        mdl = LabelFrame(self.window, labelanchor='nw', padx=5, pady=5, width=self.canvasWidth, text='Modèle', relief=RIDGE)
 
         alpha = Scale(mdl, orient='horizontal', from_=0, to=3, resolution=0.1, tickinterval=2, label='Alpha', command=self._needReset)
         beta = Scale(mdl, orient='horizontal', from_=0, to=1, resolution=0.1, tickinterval=2, label='Beta', command=self._needReset)
@@ -211,6 +211,10 @@ class Window:
             self.mapRadius = int(self.sliders["radius"].get())
             
             self.controller.ResetGrid(alpha, beta, gamma, self.mapRadius)
+            
+            hexaWidth = self.canvasWidth/self.controller.nbCellsWidth
+            hexaRadius = hexaWidth/2
+            self.layout = Layout.PointyLayout(Point(self.canvasWidth/2,self.canvasHeight/2), hexaRadius)
             
             self.buttons["reset"].config(bg=self.window.cget("bg"))
             self.redraw = True
@@ -337,5 +341,7 @@ class Window:
         return "#" + str(hex(nR).split("x")[-1]) + str(hex(nG).split("x")[-1]) + str(hex(nB).split("x")[-1])
     
     def _ExportImg(self):
-        pass
+        self.canvas.update()
+        self.canvas.postscript(file=r"../flocon_{}.ps".format(self.controller.model.step), colormode='color')
 
+ 

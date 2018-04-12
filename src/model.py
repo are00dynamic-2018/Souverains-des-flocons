@@ -159,7 +159,7 @@ class Model():
                     p.start()
                     my_procs.append(p)
                     
-                task = 1#calc receptive
+                task = 1 #calc receptive
                 for c in local_hm.values():
                     if cell.isEdge:
                         continue
@@ -168,7 +168,7 @@ class Model():
                 
                 print("len dicts[]: "+str(len(rec)))
                 
-                task = 2#calc final sums
+                task = 2 #calc final sums
                 for qr in tuple(local_hm.keys()):
                     if cell.isEdge:
                         continue
@@ -239,4 +239,4 @@ class Model():
                     [c.oldState for c in nonRec.GetNeighbors(nonRecCell)])/12 +
                     rec[qr].state)
                 
-
+        print(self.step, ":", time.time() - old, "s")
